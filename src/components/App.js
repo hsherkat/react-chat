@@ -28,6 +28,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
 require("./App.css");
+const chat_1 = __importDefault(require("./chat"));
 const Header_1 = __importDefault(require("./Header"));
 function App() {
     const [currentTime, setCurrentTime] = (0, react_1.useState)('(fetching...)');
@@ -47,6 +48,7 @@ function App() {
         react_1.default.createElement("p", null,
             "Fetched from the flask backend: time is: ",
             currentTime,
-            ".")));
+            "."),
+        react_1.default.createElement(chat_1.default, null)));
 }
 exports.default = App;

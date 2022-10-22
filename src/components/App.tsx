@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./App.css";
+import MessageWindow from "./chat";
 import Header from "./Header";
-
 
 
 
@@ -22,6 +22,7 @@ function App(): React.ReactElement {
     <div className="App">
       <Header text="React Chat App"/> <hr></hr>
       <p>Fetched from the flask backend: time is: {currentTime}.</p>
+      <MessageWindow></MessageWindow>
     </div>
   );
 }
