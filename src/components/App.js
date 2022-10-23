@@ -31,14 +31,20 @@ require("./App.css");
 const chat_1 = __importDefault(require("./chat"));
 const Header_1 = __importDefault(require("./Header"));
 function App() {
-    const [currentTime, setCurrentTime] = (0, react_1.useState)('(fetching...)');
+    const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
     (0, react_1.useEffect)(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
             const userPosition = position.coords;
-            const query = new URLSearchParams({ latitude: userPosition.latitude.toString(), longitude: userPosition.longitude.toString() });
-            fetch('/api?' + query.toString()).then(res => res.json()).then(data => {
+            const query = new URLSearchParams({
+                latitude: userPosition.latitude.toString(),
+                longitude: userPosition.longitude.toString(),
+            });
+            fetch("/api?" + query.toString())
+                .then((res) => res.json())
+                .then((data) => {
                 setCurrentTime(data.time);
-            }).catch((error) => console.log(error));
+            })
+                .catch((error) => console.log(error));
         });
     }, []);
     return (react_1.default.createElement("div", { className: "App" },

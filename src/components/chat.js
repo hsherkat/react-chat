@@ -27,29 +27,30 @@ const react_1 = __importStar(require("react"));
 require("./chat.css");
 function MessageInput({ addMessage }) {
     function onMessageSend(e) {
-        if (e.key === 'Enter') {
+        if (e.key === "Enter") {
             let msg = {
-                user: 'You',
-                text: e.target.value
+                user: "You",
+                text: e.target.value,
             };
             e.target.value = "";
             addMessage(msg);
         }
     }
     return (react_1.default.createElement("div", { className: "MessageInput" },
-        react_1.default.createElement("input", { type: "text", placeholder: "Press Enter to send", onKeyDown: e => onMessageSend(e) })));
+        react_1.default.createElement("input", { type: "text", placeholder: "Press Enter to send", onKeyDown: (e) => onMessageSend(e) })));
 }
 let fakeMessages = [
-    { user: 'Mike', text: 'go NU!' },
-    { user: 'Dustin', text: 'NU will lose!' }
+    { user: "Mike", text: "go NU!" },
+    { user: "Dustin", text: "NU will lose!" },
 ];
 function MessagesBox({ messages }) {
     return (react_1.default.createElement("div", null,
         react_1.default.createElement("ul", null, messages.map((msg, index) => {
-            return react_1.default.createElement("li", { key: index },
+            return (react_1.default.createElement("li", { key: index },
                 react_1.default.createElement("span", { className: "message-user" }, msg.user),
-                ": ",
-                react_1.default.createElement("span", { className: "message-text" }, msg.text));
+                ":",
+                " ",
+                react_1.default.createElement("span", { className: "message-text" }, msg.text)));
         }))));
 }
 function MessageWindow() {
