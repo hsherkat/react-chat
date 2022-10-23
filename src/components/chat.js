@@ -37,14 +37,20 @@ function MessageInput({ addMessage }) {
         }
     }
     return (react_1.default.createElement("div", { className: "MessageInput" },
-        react_1.default.createElement("input", { type: "text", placeholder: "Press Enter to send", onKeyDown: (e) => onMessageSend(e) })));
+        react_1.default.createElement("input", { className: "MessageInput--text", type: "text", placeholder: "Press Enter to send", onKeyDown: (e) => onMessageSend(e) })));
 }
 let fakeMessages = [
     { user: "Mike", text: "go NU!" },
     { user: "Dustin", text: "NU will lose!" },
+    { user: "Mer", text: "where's the kitty?" },
+    {
+        user: "You",
+        text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
+    },
+    { user: "Brian", text: "heyooooo" },
 ];
 function MessagesBox({ messages }) {
-    return (react_1.default.createElement("div", null,
+    return (react_1.default.createElement("div", { className: "MessagesBox" },
         react_1.default.createElement("ul", null, messages.map((msg, index) => {
             return (react_1.default.createElement("li", { key: index },
                 react_1.default.createElement("span", { className: "message-user" }, msg.user),

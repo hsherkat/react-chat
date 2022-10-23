@@ -1,11 +1,8 @@
 from flask import Flask
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
-
-
-@app.route("/socket")
-def home():
-    return "messages coming form here"
+socket = SocketIO(app, cors_allowed_origins="*")
 
 
 from flask_backend.views import *

@@ -27,9 +27,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importStar(require("react"));
+const socket_io_client_1 = __importDefault(require("socket.io-client"));
 require("./App.css");
 const chat_1 = __importDefault(require("./chat"));
 const Header_1 = __importDefault(require("./Header"));
+const socket = (0, socket_io_client_1.default)("http://localhost:5000");
 function App() {
     const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
     (0, react_1.useEffect)(() => {

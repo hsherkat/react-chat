@@ -25,6 +25,7 @@ function MessageInput({ addMessage }: MessageInputProps): ReactElement {
   return (
     <div className="MessageInput">
       <input
+        className="MessageInput--text"
         type="text"
         placeholder="Press Enter to send"
         onKeyDown={(e) => onMessageSend(e)}
@@ -36,6 +37,12 @@ function MessageInput({ addMessage }: MessageInputProps): ReactElement {
 let fakeMessages: ChatMessage[] = [
   { user: "Mike", text: "go NU!" },
   { user: "Dustin", text: "NU will lose!" },
+  { user: "Mer", text: "where's the kitty?" },
+  {
+    user: "You",
+    text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
+  },
+  { user: "Brian", text: "heyooooo" },
 ];
 
 type MessagesBoxProps = {
@@ -44,7 +51,7 @@ type MessagesBoxProps = {
 
 function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
   return (
-    <div>
+    <div className="MessagesBox">
       <ul>
         {messages.map((msg, index) => {
           return (

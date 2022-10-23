@@ -13,3 +13,29 @@ ul {
     font-size: 1.1em;
     font-weight: bold;
 }
+
+.MessagesBox {
+    height: 75vh;
+    overflow-y: scroll;
+}
+
+.MessageWindow {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    position: bottom;
+    background-color: lightslategray;
+}
+
+.MessageInput--text {
+    background-color: beige;
+    font-size: 1.15em;
+}
+
+.MessagesBox li {
+    border-radius: 10px;
+    background-color: aliceblue;
+    padding: 5px;
+    margin: 5px;
+    font-size: 1.05em;
+}

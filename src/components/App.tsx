@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
 import "./App.css";
 import MessageWindow from "./chat";
 import Header from "./Header";
+
+const socket = io("http://localhost:5000");
 
 function App(): React.ReactElement {
   const [currentTime, setCurrentTime] = useState("(fetching...)");
