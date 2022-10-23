@@ -1,10 +1,6 @@
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement } from "react";
+import { ChatMessage } from "./App";
 import "./chat.css";
-
-type ChatMessage = {
-  user: string;
-  text: string;
-};
 
 type MessageInputProps = {
   addMessage: Function;
@@ -34,17 +30,6 @@ function MessageInput({ addMessage }: MessageInputProps): ReactElement {
   );
 }
 
-let fakeMessages: ChatMessage[] = [
-  { user: "Mike", text: "go NU!" },
-  { user: "Dustin", text: "NU will lose!" },
-  { user: "Mer", text: "where's the kitty?" },
-  {
-    user: "You",
-    text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
-  },
-  { user: "Brian", text: "heyooooo" },
-];
-
 type MessagesBoxProps = {
   messages: ChatMessage[];
 };
@@ -66,13 +51,7 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
   );
 }
 
-function MessageWindow(): ReactElement {
-  const [messages, setMessages] = useState(fakeMessages);
-
-  function addMessage(newMessage: ChatMessage) {
-    setMessages([...messages, newMessage]);
-  }
-
+function MessageWindow({ messages, addMessage }): ReactElement {
   return (
     <div className="MessageWindow">
       <MessagesBox messages={messages}></MessagesBox>
