@@ -56,30 +56,6 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
   );
 }
 
-type ChatWindowProps = {
-  messages: ChatMessage[];
-  addMessage: Function;
-  username: string;
-  setUsername: Function;
-};
-
-function ChatWindow({
-  messages,
-  addMessage,
-  username,
-  setUsername,
-}: ChatWindowProps): ReactElement {
-  return (
-    <div className="ChatWindow">
-      <div className="MessageUserSplit">
-        <MessagesBox messages={messages}></MessagesBox>
-        <UserWindow username={username} setUsername={setUsername}></UserWindow>
-      </div>
-      <MessageInput username={username} addMessage={addMessage}></MessageInput>
-    </div>
-  );
-}
-
 type UserWindowProps = {
   username: string;
   setUsername: Function;
@@ -103,6 +79,30 @@ function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
           }}
         ></input>
       </form>
+    </div>
+  );
+}
+
+type ChatWindowProps = {
+  messages: ChatMessage[];
+  addMessage: Function;
+  username: string;
+  setUsername: Function;
+};
+
+function ChatWindow({
+  messages,
+  addMessage,
+  username,
+  setUsername,
+}: ChatWindowProps): ReactElement {
+  return (
+    <div className="ChatWindow">
+      <div className="MessageUserSplit">
+        <MessagesBox messages={messages}></MessagesBox>
+        <UserWindow username={username} setUsername={setUsername}></UserWindow>
+      </div>
+      <MessageInput username={username} addMessage={addMessage}></MessageInput>
     </div>
   );
 }

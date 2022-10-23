@@ -31,13 +31,6 @@ function MessagesBox({ messages }) {
                 react_1.default.createElement("span", { className: "message-text" }, msg.text)));
         }))));
 }
-function ChatWindow({ messages, addMessage, username, setUsername, }) {
-    return (react_1.default.createElement("div", { className: "ChatWindow" },
-        react_1.default.createElement("div", { className: "MessageUserSplit" },
-            react_1.default.createElement(MessagesBox, { messages: messages }),
-            react_1.default.createElement(UserWindow, { username: username, setUsername: setUsername })),
-        react_1.default.createElement(MessageInput, { username: username, addMessage: addMessage })));
-}
 function UserWindow({ username, setUsername }) {
     return (react_1.default.createElement("div", { className: "UserWindow" },
         react_1.default.createElement("span", null, "Active users"),
@@ -50,5 +43,12 @@ function UserWindow({ username, setUsername }) {
                     setUsername(e.target.value);
                     console.log(e.target.value);
                 } }))));
+}
+function ChatWindow({ messages, addMessage, username, setUsername, }) {
+    return (react_1.default.createElement("div", { className: "ChatWindow" },
+        react_1.default.createElement("div", { className: "MessageUserSplit" },
+            react_1.default.createElement(MessagesBox, { messages: messages }),
+            react_1.default.createElement(UserWindow, { username: username, setUsername: setUsername })),
+        react_1.default.createElement(MessageInput, { username: username, addMessage: addMessage })));
 }
 exports.default = ChatWindow;
