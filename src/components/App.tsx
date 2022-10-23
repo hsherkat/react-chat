@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import "./App.css";
-import MessageWindow from "./chat";
+import ChatWindow from "./chat";
 import Header from "./Header";
 
-const socket = io("http://localhost:5000");
+export const socket = io("http://localhost:5000");
 
 export type ChatMessage = {
   user: string;
@@ -25,10 +25,16 @@ let fakeMessages: ChatMessage[] = [
 function App(): React.ReactElement {
   const [currentTime, setCurrentTime] = useState("(fetching...)");
   const [messages, setMessages] = useState(fakeMessages);
+  const [username, setUsername] = useState("Anonymous");
 
   function addMessage(newMessage: ChatMessage) {
     setMessages([...messages, newMessage]);
   }
+
+  socket.on("message", (msg) => {
+    console.log(msg);
+    addMessage(msg);
+  });
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {
@@ -49,11 +55,16 @@ function App(): React.ReactElement {
   return (
     <div className="App">
       <Header text="React Chat App" /> <hr></hr>
-      <p>Fetched from the flask backend: time is: {currentTime}.</p>
-      <MessageWindow
+      <p>
+        The time as of page load was: {currentTime} (fetched from the Flask
+        backend time API).
+      </p>
+      <ChatWindow
         messages={messages}
         addMessage={addMessage}
-      ></MessageWindow>
+        username={username}
+        setUsername={setUsername}
+      ></ChatWindow>
     </div>
   );
 }

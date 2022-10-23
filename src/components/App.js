@@ -26,14 +26,34 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.socket = void 0;
 const react_1 = __importStar(require("react"));
 const socket_io_client_1 = __importDefault(require("socket.io-client"));
 require("./App.css");
 const chat_1 = __importDefault(require("./chat"));
 const Header_1 = __importDefault(require("./Header"));
-const socket = (0, socket_io_client_1.default)("http://localhost:5000");
+exports.socket = (0, socket_io_client_1.default)("http://localhost:5000");
+let fakeMessages = [
+    { user: "Mike", text: "go NU!" },
+    { user: "Dustin", text: "NU will lose!" },
+    { user: "Mer", text: "where's the kitty?" },
+    {
+        user: "You",
+        text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
+    },
+    { user: "Brian", text: "heyooooo" },
+];
 function App() {
     const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
+    const [messages, setMessages] = (0, react_1.useState)(fakeMessages);
+    const [username, setUsername] = (0, react_1.useState)("Anonymous");
+    function addMessage(newMessage) {
+        setMessages([...messages, newMessage]);
+    }
+    exports.socket.on("message", (msg) => {
+        console.log(msg);
+        addMessage(msg);
+    });
     (0, react_1.useEffect)(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
             const userPosition = position.coords;
@@ -54,9 +74,9 @@ function App() {
         " ",
         react_1.default.createElement("hr", null),
         react_1.default.createElement("p", null,
-            "Fetched from the flask backend: time is: ",
+            "The time as of page load was: ",
             currentTime,
-            "."),
-        react_1.default.createElement(chat_1.default, null)));
+            " (fetched from the Flask backend time API)."),
+        react_1.default.createElement(chat_1.default, { messages: messages, addMessage: addMessage, username: username, setUsername: setUsername })));
 }
 exports.default = App;

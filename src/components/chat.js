@@ -1,54 +1,26 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const react_1 = __importStar(require("react"));
+const react_1 = __importDefault(require("react"));
+const App_1 = require("./App");
 require("./chat.css");
-function MessageInput({ addMessage }) {
+function MessageInput({ username, addMessage, }) {
     function onMessageSend(e) {
         if (e.key === "Enter") {
             let msg = {
-                user: "You",
+                user: username,
                 text: e.target.value,
             };
             e.target.value = "";
-            addMessage(msg);
+            // addMessage(msg);
+            App_1.socket.emit("message", msg);
         }
     }
     return (react_1.default.createElement("div", { className: "MessageInput" },
-        react_1.default.createElement("input", { className: "MessageInput--text", type: "text", placeholder: "Press Enter to send", onKeyDown: (e) => onMessageSend(e) })));
+        react_1.default.createElement("input", { className: "MessageInput--text", type: "text", placeholder: "Press <Enter> to send message", onKeyDown: (e) => onMessageSend(e) })));
 }
-let fakeMessages = [
-    { user: "Mike", text: "go NU!" },
-    { user: "Dustin", text: "NU will lose!" },
-    { user: "Mer", text: "where's the kitty?" },
-    {
-        user: "You",
-        text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
-    },
-    { user: "Brian", text: "heyooooo" },
-];
 function MessagesBox({ messages }) {
     return (react_1.default.createElement("div", { className: "MessagesBox" },
         react_1.default.createElement("ul", null, messages.map((msg, index) => {
@@ -59,13 +31,24 @@ function MessagesBox({ messages }) {
                 react_1.default.createElement("span", { className: "message-text" }, msg.text)));
         }))));
 }
-function MessageWindow() {
-    const [messages, setMessages] = (0, react_1.useState)(fakeMessages);
-    function addMessage(newMessage) {
-        setMessages([...messages, newMessage]);
-    }
-    return (react_1.default.createElement("div", { className: "MessageWindow" },
-        react_1.default.createElement(MessagesBox, { messages: messages }),
-        react_1.default.createElement(MessageInput, { addMessage: addMessage })));
+function ChatWindow({ messages, addMessage, username, setUsername, }) {
+    return (react_1.default.createElement("div", { className: "ChatWindow" },
+        react_1.default.createElement("div", { className: "MessageUserSplit" },
+            react_1.default.createElement(MessagesBox, { messages: messages }),
+            react_1.default.createElement(UserWindow, { username: username, setUsername: setUsername })),
+        react_1.default.createElement(MessageInput, { username: username, addMessage: addMessage })));
 }
-exports.default = MessageWindow;
+function UserWindow({ username, setUsername }) {
+    return (react_1.default.createElement("div", { className: "UserWindow" },
+        react_1.default.createElement("span", null, "Active users"),
+        react_1.default.createElement("ul", { className: "users-list" }),
+        react_1.default.createElement("hr", null),
+        react_1.default.createElement("span", null, " Input your info:"),
+        react_1.default.createElement("form", { className: "user-input" },
+            react_1.default.createElement("label", { htmlFor: "username" }, "Username "),
+            react_1.default.createElement("input", { type: "text", value: username, onChange: (e) => {
+                    setUsername(e.target.value);
+                    console.log(e.target.value);
+                } }))));
+}
+exports.default = ChatWindow;

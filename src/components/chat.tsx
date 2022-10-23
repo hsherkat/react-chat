@@ -1,20 +1,25 @@
 import React, { ReactElement } from "react";
-import { ChatMessage } from "./App";
+import { ChatMessage, socket } from "./App";
 import "./chat.css";
 
 type MessageInputProps = {
+  username: string;
   addMessage: Function;
 };
 
-function MessageInput({ addMessage }: MessageInputProps): ReactElement {
+function MessageInput({
+  username,
+  addMessage,
+}: MessageInputProps): ReactElement {
   function onMessageSend(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       let msg: ChatMessage = {
-        user: "You",
+        user: username,
         text: (e.target as HTMLTextAreaElement).value,
       };
       (e.target as HTMLTextAreaElement).value = "";
-      addMessage(msg);
+      // addMessage(msg);
+      socket.emit("message", msg);
     }
   }
 
@@ -23,7 +28,7 @@ function MessageInput({ addMessage }: MessageInputProps): ReactElement {
       <input
         className="MessageInput--text"
         type="text"
-        placeholder="Press Enter to send"
+        placeholder="Press <Enter> to send message"
         onKeyDown={(e) => onMessageSend(e)}
       ></input>
     </div>
@@ -51,13 +56,55 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
   );
 }
 
-function MessageWindow({ messages, addMessage }): ReactElement {
+type ChatWindowProps = {
+  messages: ChatMessage[];
+  addMessage: Function;
+  username: string;
+  setUsername: Function;
+};
+
+function ChatWindow({
+  messages,
+  addMessage,
+  username,
+  setUsername,
+}: ChatWindowProps): ReactElement {
   return (
-    <div className="MessageWindow">
-      <MessagesBox messages={messages}></MessagesBox>
-      <MessageInput addMessage={addMessage}></MessageInput>
+    <div className="ChatWindow">
+      <div className="MessageUserSplit">
+        <MessagesBox messages={messages}></MessagesBox>
+        <UserWindow username={username} setUsername={setUsername}></UserWindow>
+      </div>
+      <MessageInput username={username} addMessage={addMessage}></MessageInput>
     </div>
   );
 }
 
-export default MessageWindow;
+type UserWindowProps = {
+  username: string;
+  setUsername: Function;
+};
+
+function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
+  return (
+    <div className="UserWindow">
+      <span>Active users</span>
+      <ul className="users-list"></ul>
+      <hr></hr>
+      <span> Input your info:</span>
+      <form className="user-input">
+        <label htmlFor="username">Username </label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => {
+            setUsername((e.target as HTMLInputElement).value);
+            console.log((e.target as HTMLInputElement).value);
+          }}
+        ></input>
+      </form>
+    </div>
+  );
+}
+
+export default ChatWindow;

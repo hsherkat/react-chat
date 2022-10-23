@@ -5,7 +5,7 @@ from flask import request
 from flask_socketio import emit
 from timezonefinder import TimezoneFinder
 
-from flask_backend import app
+from flask_backend import app, socket
 
 
 @app.route("/")
@@ -25,10 +25,16 @@ def api_fn():
     return {"time": datetime.now()}
 
 
+test_msg = {"user": "Mike", "text": "welp... we'll get em next time"}
+
+
 @app.route("/test")
 def test_fn():
-    emit(
-        "message",
-        {"user": "Mike", "text": "welp... we'll get em next time"},
-        broadcast=True,
-    )
+    socket.emit("message", test_msg, broadcast=True)
+    print(f"sent {test_msg=}")
+    return "<h1> this is a test </h1>"
+
+
+@socket.on("connect")
+def test_connect(auth):
+    emit("my response", test_msg)

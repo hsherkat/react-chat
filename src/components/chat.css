@@ -19,16 +19,15 @@ ul {
     overflow-y: scroll;
 }
 
-.MessageWindow {
+.ChatWindow {
     display: flex;
     flex-direction: column;
     height: auto;
     position: bottom;
-    background-color: lightslategray;
 }
 
 .MessageInput--text {
-    background-color: beige;
+    background-color: aliceblue;
     font-size: 1.15em;
 }
 
@@ -38,4 +37,25 @@ ul {
     padding: 5px;
     margin: 5px;
     font-size: 1.05em;
+}
+
+.MessageUserSplit {
+    display: flex;
+}
+
+.MessageUserSplit .UserWindow {
+    width: 20%;
+}
+.MessageUserSplit .MessagesBox {
+    width: 80%;
+    background-color: lightslategray;
+
+}
+
+.user-input {
+    display:flex;
+}
+.user-input input{
+    margin-left: 10px;
+    border-radius: 5px;
 }
