@@ -95,22 +95,28 @@ type UserWindowProps = {
 };
 
 function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
+  function onUsernameEntered(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      const newName = (e.target as HTMLInputElement).value;
+      setUsername(newName);
+      console.log(newName);
+    }
+  }
+
   return (
     <div className="UserWindow">
       <span>Active users</span>
       <ul className="users-list"></ul>
       <hr></hr>
       <span> Input your info:</span>
-      <form className="username-input">
+      <div className="username-input">
         <label htmlFor="username">Username </label>
         <input
           type="text"
-          value={username}
-          onChange={(e) => {
-            setUsername((e.target as HTMLInputElement).value);
-          }}
+          placeholder="Press <Enter> to change username"
+          onKeyDown={(e) => onUsernameEntered(e)}
         ></input>
-      </form>
+      </div>
       <hr></hr>
       <WebcamCapture username={username}></WebcamCapture>
     </div>

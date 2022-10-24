@@ -53,16 +53,21 @@ function WebcamCapture({ username }) {
         react_1.default.createElement("button", { onClick: capture }, "Send photo")));
 }
 function UserWindow({ username, setUsername }) {
+    function onUsernameEntered(e) {
+        if (e.key === "Enter") {
+            const newName = e.target.value;
+            setUsername(newName);
+            console.log(newName);
+        }
+    }
     return (react_1.default.createElement("div", { className: "UserWindow" },
         react_1.default.createElement("span", null, "Active users"),
         react_1.default.createElement("ul", { className: "users-list" }),
         react_1.default.createElement("hr", null),
         react_1.default.createElement("span", null, " Input your info:"),
-        react_1.default.createElement("form", { className: "username-input" },
+        react_1.default.createElement("div", { className: "username-input" },
             react_1.default.createElement("label", { htmlFor: "username" }, "Username "),
-            react_1.default.createElement("input", { type: "text", value: username, onChange: (e) => {
-                    setUsername(e.target.value);
-                } })),
+            react_1.default.createElement("input", { type: "text", placeholder: "Press <Enter> to change username", onKeyDown: (e) => onUsernameEntered(e) })),
         react_1.default.createElement("hr", null),
         react_1.default.createElement(WebcamCapture, { username: username })));
 }
