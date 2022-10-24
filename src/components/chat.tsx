@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useCallback, useRef } from "react";
 import Webcam from "react-webcam";
 import { ChatMessage, socket } from "./App";
 import "./chat.css";
@@ -10,8 +10,7 @@ type MessageInputProps = {
 function MessageInput({ username }: MessageInputProps): ReactElement {
   function onMessageSend(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
-      let msg: ChatMessage = {
-        user: username,
+      let msg = {
         text: (e.target as HTMLTextAreaElement).value,
       };
       (e.target as HTMLTextAreaElement).value = "";
@@ -42,7 +41,7 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
         {messages.map((msg, index) => {
           return (
             <li key={index}>
-              <span className="message-user">{msg.user}</span>:{" "}
+              <span className="message-user">{msg.user.username}</span>:{" "}
               <span className="message-text">{msg.text}</span>
               <img src={msg.image64}></img>
             </li>
@@ -64,11 +63,10 @@ type WebcamCaptureProps = {
 };
 
 function WebcamCapture({ username }: WebcamCaptureProps) {
-  const webcamRef = React.useRef(null);
-  const capture = React.useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
-    let msg: ChatMessage = {
-      user: username,
+  const webcamRef = useRef<Webcam>(null);
+  const capture = useCallback(() => {
+    const imageSrc = webcamRef.current?.getScreenshot();
+    let msg = {
       text: "",
       image64: imageSrc,
     };
@@ -99,7 +97,7 @@ function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
     if (e.key === "Enter") {
       const newName = (e.target as HTMLInputElement).value;
       setUsername(newName);
-      console.log(newName);
+      socket.emit("usernameChange", newName);
     }
   }
 

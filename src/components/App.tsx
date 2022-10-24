@@ -6,21 +6,26 @@ import Header from "./Header";
 
 export const socket = io("http://localhost:5000");
 
+type User = {
+  id: string;
+  username: string;
+};
+
 export type ChatMessage = {
-  user: string;
+  user: User;
   text: string;
   image64?: string;
 };
 
 let fakeMessages: ChatMessage[] = [
-  { user: "Mike", text: "go NU!" },
-  { user: "Dustin", text: "NU will lose!" },
-  { user: "Mer", text: "where's the kitty?" },
+  { user: { id: "1", username: "Mike" }, text: "go NU!" },
+  { user: { id: "2", username: "Dustin" }, text: "NU will lose!" },
+  { user: { id: "3", username: "Mer" }, text: "where's the kitty?" },
   {
-    user: "You",
+    user: { id: "4", username: "Me" },
     text: "don't worry, she'll be back...",
   },
-  { user: "Brian", text: "yup" },
+  { user: { id: "5", username: "Brian" }, text: "yup" },
 ];
 
 function App(): React.ReactElement {

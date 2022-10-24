@@ -5,12 +5,6 @@ from flask import request
 from flask_backend.user import User, connected_users
 
 
-@socket.on("message")
-def handle_message(message_json):
-    print(message_json["user"], message_json["text"])
-    emit("message", message_json, broadcast=True)
-
-
 @socket.on("connect")
 def handle_connect():
     new_user = User(id=request.sid)
@@ -26,10 +20,24 @@ def handle_connect():
 
 @socket.on("disconnect")
 def handle_disconnect():
-    user = User(id=request.sid)
+    user = connected_users[request.sid]
     del connected_users[user.id]
     print("#######\n")
     print(f"User disconnected: {user}")
     print(f"All users: {connected_users}")
     print("\n#######")
     emit("delUser", user.json(), broadcast=True)
+
+
+@socket.on("usernameChange")
+def handle_username_change(new_name):
+    user = connected_users[request.sid]
+    user.username = new_name
+    emit("usernameChange", user.json())
+
+
+@socket.on("message")
+def handle_message(message_json):
+    user = connected_users[request.sid]
+    message_json['user'] = user.json()
+    emit("message", message_json, broadcast=True)
