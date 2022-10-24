@@ -44,19 +44,26 @@ ul {
     
 }
 
-.MessageUserSplit .UserWindow {
+.UserWindow {
     width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
-.MessageUserSplit .MessagesBox {
+
+
+
+.MessagesBox {
     width: 80%;
     background-color: lightslategray;
 
 }
 
-.user-input {
+.username-input {
     display:flex;
 }
-.user-input input{
+
+.username-input input{
     margin-left: 10px;
     border-radius: 5px;
 }

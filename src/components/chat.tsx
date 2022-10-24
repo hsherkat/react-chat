@@ -73,9 +73,9 @@ function WebcamCapture({ username }: WebcamCaptureProps) {
       image64: imageSrc,
     };
     socket.emit("message", msg);
-  }, [webcamRef]);
+  }, [webcamRef, username]);
   return (
-    <>
+    <div className="webcam">
       <Webcam
         audio={false}
         height={180}
@@ -85,7 +85,7 @@ function WebcamCapture({ username }: WebcamCaptureProps) {
         videoConstraints={videoConstraints}
       />
       <button onClick={capture}>Send photo</button>
-    </>
+    </div>
   );
 }
 
@@ -101,14 +101,13 @@ function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
       <ul className="users-list"></ul>
       <hr></hr>
       <span> Input your info:</span>
-      <form className="user-input">
+      <form className="username-input">
         <label htmlFor="username">Username </label>
         <input
           type="text"
           value={username}
           onChange={(e) => {
             setUsername((e.target as HTMLInputElement).value);
-            console.log((e.target as HTMLInputElement).value);
           }}
         ></input>
       </form>

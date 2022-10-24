@@ -47,8 +47,8 @@ function WebcamCapture({ username }) {
             image64: imageSrc,
         };
         App_1.socket.emit("message", msg);
-    }, [webcamRef]);
-    return (react_1.default.createElement(react_1.default.Fragment, null,
+    }, [webcamRef, username]);
+    return (react_1.default.createElement("div", { className: "webcam" },
         react_1.default.createElement(react_webcam_1.default, { audio: false, height: 180, ref: webcamRef, screenshotFormat: "image/jpeg", width: 320, videoConstraints: videoConstraints }),
         react_1.default.createElement("button", { onClick: capture }, "Send photo")));
 }
@@ -58,11 +58,10 @@ function UserWindow({ username, setUsername }) {
         react_1.default.createElement("ul", { className: "users-list" }),
         react_1.default.createElement("hr", null),
         react_1.default.createElement("span", null, " Input your info:"),
-        react_1.default.createElement("form", { className: "user-input" },
+        react_1.default.createElement("form", { className: "username-input" },
             react_1.default.createElement("label", { htmlFor: "username" }, "Username "),
             react_1.default.createElement("input", { type: "text", value: username, onChange: (e) => {
                     setUsername(e.target.value);
-                    console.log(e.target.value);
                 } })),
         react_1.default.createElement("hr", null),
         react_1.default.createElement(WebcamCapture, { username: username })));

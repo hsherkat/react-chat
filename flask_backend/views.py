@@ -33,8 +33,3 @@ def test_fn():
     socket.emit("message", test_msg, broadcast=True)
     print(f"sent {test_msg=}")
     return "<h1> this is a test </h1>"
-
-
-@socket.on("connect")
-def test_connect(auth):
-    emit("my response", test_msg)

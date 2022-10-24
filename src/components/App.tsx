@@ -27,14 +27,27 @@ function App(): React.ReactElement {
   const [currentTime, setCurrentTime] = useState("(fetching...)");
   const [messages, setMessages] = useState(fakeMessages);
   const [username, setUsername] = useState("Anonymous");
+  const [userList, setUserList] = useState<string[]>([]);
 
   function addMessage(newMessage: ChatMessage) {
     setMessages([...messages, newMessage]);
   }
 
   socket.on("message", (msg) => {
-    console.log(msg);
     addMessage(msg);
+  });
+
+  type UserObject = {
+    id: string;
+  };
+
+  function addUser(newUser: UserObject) {
+    setUserList([...userList, newUser.id]);
+  }
+
+  socket.on("newUser", (user) => {
+    addUser(user);
+    console.log(userList);
   });
 
   useEffect(() => {
