@@ -50,10 +50,10 @@ function App() {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
     }
     (0, react_1.useEffect)(() => {
-        exports.socket.on("message", (msg) => {
-            addMessage(msg);
-            console.log("message received");
-        });
+        exports.socket.on("message", addMessage);
+        return () => {
+            exports.socket.off("message", addMessage);
+        };
     }, []);
     (0, react_1.useEffect)(() => {
         navigator.geolocation.getCurrentPosition(function (position) {

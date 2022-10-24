@@ -37,10 +37,11 @@ function App(): React.ReactElement {
   }
 
   useEffect(() => {
-    socket.on("message", (msg) => {
-      addMessage(msg);
-      console.log("message received");
-    });
+    socket.on("message", addMessage);
+
+    return () => {
+      socket.off("message", addMessage);
+    };
   }, []);
 
   useEffect(() => {
