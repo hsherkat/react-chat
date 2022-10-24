@@ -41,6 +41,7 @@ ul {
 
 .MessageUserSplit {
     display: flex;
+    
 }
 
 .MessageUserSplit .UserWindow {
@@ -59,3 +60,4 @@ ul {
     margin-left: 10px;
     border-radius: 5px;
 }
+
