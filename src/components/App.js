@@ -46,7 +46,6 @@ let fakeMessages = [
 function App() {
     const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
     const [messages, setMessages] = (0, react_1.useState)(fakeMessages);
-    const [username, setUsername] = (0, react_1.useState)("Anonymous");
     const [userList, setUserList] = (0, react_1.useState)([]);
     function addMessage(newMessage) {
         setMessages([...messages, newMessage]);
@@ -84,6 +83,6 @@ function App() {
             "The time as of page load was: ",
             currentTime,
             " (fetched from the Flask backend time API)."),
-        react_1.default.createElement(chat_1.default, { messages: messages, addMessage: addMessage, username: username, setUsername: setUsername })));
+        react_1.default.createElement(chat_1.default, { messages: messages, addMessage: addMessage })));
 }
 exports.default = App;

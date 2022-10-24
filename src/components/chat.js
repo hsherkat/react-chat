@@ -30,7 +30,7 @@ const react_1 = __importStar(require("react"));
 const react_webcam_1 = __importDefault(require("react-webcam"));
 const App_1 = require("./App");
 require("./chat.css");
-function MessageInput({ username }) {
+function MessageInput() {
     function onMessageSend(e) {
         if (e.key === "Enter") {
             let msg = {
@@ -59,7 +59,7 @@ const videoConstraints = {
     height: 720,
     facingMode: "user",
 };
-function WebcamCapture({ username }) {
+function WebcamCapture() {
     const webcamRef = (0, react_1.useRef)(null);
     const capture = (0, react_1.useCallback)(() => {
         var _a;
@@ -69,16 +69,15 @@ function WebcamCapture({ username }) {
             image64: imageSrc,
         };
         App_1.socket.emit("message", msg);
-    }, [webcamRef, username]);
+    }, [webcamRef]);
     return (react_1.default.createElement("div", { className: "webcam" },
         react_1.default.createElement(react_webcam_1.default, { audio: false, height: 180, ref: webcamRef, screenshotFormat: "image/jpeg", width: 320, videoConstraints: videoConstraints }),
         react_1.default.createElement("button", { onClick: capture }, "Send photo")));
 }
-function UserWindow({ username, setUsername }) {
+function UserWindow() {
     function onUsernameEntered(e) {
         if (e.key === "Enter") {
             const newName = e.target.value;
-            setUsername(newName);
             App_1.socket.emit("usernameChange", newName);
         }
     }
@@ -91,13 +90,13 @@ function UserWindow({ username, setUsername }) {
             react_1.default.createElement("label", { htmlFor: "username" }, "Username "),
             react_1.default.createElement("input", { type: "text", placeholder: "Press <Enter> to change username", onKeyDown: (e) => onUsernameEntered(e) })),
         react_1.default.createElement("hr", null),
-        react_1.default.createElement(WebcamCapture, { username: username })));
+        react_1.default.createElement(WebcamCapture, null)));
 }
-function ChatWindow({ messages, addMessage, username, setUsername, }) {
+function ChatWindow({ messages, addMessage }) {
     return (react_1.default.createElement("div", { className: "ChatWindow" },
         react_1.default.createElement("div", { className: "MessageUserSplit" },
             react_1.default.createElement(MessagesBox, { messages: messages }),
-            react_1.default.createElement(UserWindow, { username: username, setUsername: setUsername })),
-        react_1.default.createElement(MessageInput, { username: username })));
+            react_1.default.createElement(UserWindow, null)),
+        react_1.default.createElement(MessageInput, null)));
 }
 exports.default = ChatWindow;

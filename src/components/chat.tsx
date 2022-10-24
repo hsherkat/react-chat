@@ -3,11 +3,7 @@ import Webcam from "react-webcam";
 import { ChatMessage, socket } from "./App";
 import "./chat.css";
 
-type MessageInputProps = {
-  username: string;
-};
-
-function MessageInput({ username }: MessageInputProps): ReactElement {
+function MessageInput(): ReactElement {
   function onMessageSend(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       let msg = {
@@ -58,11 +54,7 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-type WebcamCaptureProps = {
-  username: string;
-};
-
-function WebcamCapture({ username }: WebcamCaptureProps) {
+function WebcamCapture() {
   const webcamRef = useRef<Webcam>(null);
   const capture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
@@ -71,7 +63,7 @@ function WebcamCapture({ username }: WebcamCaptureProps) {
       image64: imageSrc,
     };
     socket.emit("message", msg);
-  }, [webcamRef, username]);
+  }, [webcamRef]);
   return (
     <div className="webcam">
       <Webcam
@@ -87,16 +79,10 @@ function WebcamCapture({ username }: WebcamCaptureProps) {
   );
 }
 
-type UserWindowProps = {
-  username: string;
-  setUsername: Function;
-};
-
-function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
+function UserWindow(): ReactElement {
   function onUsernameEntered(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       const newName = (e.target as HTMLInputElement).value;
-      setUsername(newName);
       socket.emit("usernameChange", newName);
     }
   }
@@ -116,7 +102,7 @@ function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
         ></input>
       </div>
       <hr></hr>
-      <WebcamCapture username={username}></WebcamCapture>
+      <WebcamCapture></WebcamCapture>
     </div>
   );
 }
@@ -124,23 +110,16 @@ function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
 type ChatWindowProps = {
   messages: ChatMessage[];
   addMessage: Function;
-  username: string;
-  setUsername: Function;
 };
 
-function ChatWindow({
-  messages,
-  addMessage,
-  username,
-  setUsername,
-}: ChatWindowProps): ReactElement {
+function ChatWindow({ messages, addMessage }: ChatWindowProps): ReactElement {
   return (
     <div className="ChatWindow">
       <div className="MessageUserSplit">
         <MessagesBox messages={messages}></MessagesBox>
-        <UserWindow username={username} setUsername={setUsername}></UserWindow>
+        <UserWindow></UserWindow>
       </div>
-      <MessageInput username={username}></MessageInput>
+      <MessageInput></MessageInput>
     </div>
   );
 }

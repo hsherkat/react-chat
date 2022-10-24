@@ -31,7 +31,6 @@ let fakeMessages: ChatMessage[] = [
 function App(): React.ReactElement {
   const [currentTime, setCurrentTime] = useState("(fetching...)");
   const [messages, setMessages] = useState(fakeMessages);
-  const [username, setUsername] = useState("Anonymous");
   const [userList, setUserList] = useState<string[]>([]);
 
   function addMessage(newMessage: ChatMessage) {
@@ -78,12 +77,7 @@ function App(): React.ReactElement {
         The time as of page load was: {currentTime} (fetched from the Flask
         backend time API).
       </p>
-      <ChatWindow
-        messages={messages}
-        addMessage={addMessage}
-        username={username}
-        setUsername={setUsername}
-      ></ChatWindow>
+      <ChatWindow messages={messages} addMessage={addMessage}></ChatWindow>
     </div>
   );
 }
