@@ -9,35 +9,40 @@ from flask_backend.user import User, connected_users
 def handle_connect():
     new_user = User(id=request.sid)
     connected_users[new_user.id] = new_user
-    print("#######\n")
-    print(f"New user: {new_user}")
-    print(f"All users:")
-    for user in connected_users.values():
-        print(user)
-    print("\n#######")
-    emit("newUser", new_user.json(), broadcast=True)
+    user_payload = {user.id: user.json() for user in connected_users.values()}
+    emit(
+        "usersChange",
+        user_payload,
+        broadcast=True,
+    )
 
 
 @socket.on("disconnect")
 def handle_disconnect():
     user = connected_users[request.sid]
     del connected_users[user.id]
-    print("#######\n")
-    print(f"User disconnected: {user}")
-    print(f"All users: {connected_users}")
-    print("\n#######")
-    emit("delUser", user.json(), broadcast=True)
+    user_payload = {user.id: user.json() for user in connected_users.values()}
+    emit(
+        "usersChange",
+        user_payload,
+        broadcast=True,
+    )
 
 
 @socket.on("usernameChange")
 def handle_username_change(new_name):
     user = connected_users[request.sid]
     user.username = new_name
-    emit("usernameChange", user.json())
+    user_payload = {user.id: user.json() for user in connected_users.values()}
+    emit(
+        "usersChange",
+        user_payload,
+        broadcast=True,
+    )
 
 
 @socket.on("message")
 def handle_message(message_json):
     user = connected_users[request.sid]
-    message_json['user'] = user.json()
+    message_json["user"] = user.json()
     emit("message", message_json, broadcast=True)

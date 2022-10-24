@@ -6,7 +6,7 @@ import Header from "./Header";
 
 export const socket = io("http://localhost:5000");
 
-type User = {
+export type User = {
   id: string;
   username: string;
 };
@@ -31,28 +31,17 @@ let fakeMessages: ChatMessage[] = [
 function App(): React.ReactElement {
   const [currentTime, setCurrentTime] = useState("(fetching...)");
   const [messages, setMessages] = useState(fakeMessages);
-  const [userList, setUserList] = useState<string[]>([]);
 
   function addMessage(newMessage: ChatMessage) {
-    setMessages([...messages, newMessage]);
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
   }
 
-  socket.on("message", (msg) => {
-    addMessage(msg);
-  });
-
-  type UserObject = {
-    id: string;
-  };
-
-  function addUser(newUser: UserObject) {
-    setUserList([...userList, newUser.id]);
-  }
-
-  socket.on("newUser", (user) => {
-    addUser(user);
-    console.log(userList);
-  });
+  useEffect(() => {
+    socket.on("message", (msg) => {
+      addMessage(msg);
+      console.log("message received");
+    });
+  }, []);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(function (position) {

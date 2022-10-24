@@ -46,20 +46,15 @@ let fakeMessages = [
 function App() {
     const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
     const [messages, setMessages] = (0, react_1.useState)(fakeMessages);
-    const [userList, setUserList] = (0, react_1.useState)([]);
     function addMessage(newMessage) {
-        setMessages([...messages, newMessage]);
+        setMessages((prevMessages) => [...prevMessages, newMessage]);
     }
-    exports.socket.on("message", (msg) => {
-        addMessage(msg);
-    });
-    function addUser(newUser) {
-        setUserList([...userList, newUser.id]);
-    }
-    exports.socket.on("newUser", (user) => {
-        addUser(user);
-        console.log(userList);
-    });
+    (0, react_1.useEffect)(() => {
+        exports.socket.on("message", (msg) => {
+            addMessage(msg);
+            console.log("message received");
+        });
+    }, []);
     (0, react_1.useEffect)(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
             const userPosition = position.coords;

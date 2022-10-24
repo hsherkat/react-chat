@@ -66,5 +66,6 @@ ul {
 .username-input input{
     margin-left: 10px;
     border-radius: 5px;
+    overflow: visible;
 }
 

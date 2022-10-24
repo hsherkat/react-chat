@@ -1,6 +1,12 @@
-import React, { ReactElement, useCallback, useRef } from "react";
+import React, {
+  ReactElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Webcam from "react-webcam";
-import { ChatMessage, socket } from "./App";
+import { ChatMessage, socket, User } from "./App";
 import "./chat.css";
 
 function MessageInput(): ReactElement {
@@ -80,6 +86,15 @@ function WebcamCapture() {
 }
 
 function UserWindow(): ReactElement {
+  const [userList, setUserList] = useState<User[]>([]);
+
+  useEffect(() => {
+    socket.on("usersChange", (users) => {
+      setUserList(Object.values(users));
+      console.log(userList);
+    });
+  }, []);
+
   function onUsernameEntered(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       const newName = (e.target as HTMLInputElement).value;
@@ -90,13 +105,19 @@ function UserWindow(): ReactElement {
   return (
     <div className="UserWindow">
       <span>Active users</span>
-      <ul className="users-list"></ul>
+      <ul className="users-list">
+        {userList.map((user: User) => (
+          <li key={user.id}>{user.username}</li>
+        ))}
+      </ul>
       <hr></hr>
       <span> Input your info:</span>
       <div className="username-input">
         <label htmlFor="username">Username </label>
         <input
           type="text"
+          minLength={1}
+          maxLength={70}
           placeholder="Press <Enter> to change username"
           onKeyDown={(e) => onUsernameEntered(e)}
         ></input>
