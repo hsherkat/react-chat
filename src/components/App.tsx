@@ -18,9 +18,9 @@ let fakeMessages: ChatMessage[] = [
   { user: "Mer", text: "where's the kitty?" },
   {
     user: "You",
-    text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
+    text: "don't worry, she'll be back...",
   },
-  { user: "Brian", text: "heyooooo" },
+  { user: "Brian", text: "yup" },
 ];
 
 function App(): React.ReactElement {

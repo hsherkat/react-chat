@@ -39,9 +39,9 @@ let fakeMessages = [
     { user: "Mer", text: "where's the kitty?" },
     {
         user: "You",
-        text: "don't worry, she'll be back... i'm irresistable to pussy 8-)",
+        text: "don't worry, she'll be back...",
     },
-    { user: "Brian", text: "heyooooo" },
+    { user: "Brian", text: "yup" },
 ];
 function App() {
     const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
