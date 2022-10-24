@@ -4,9 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const react_1 = __importDefault(require("react"));
+const react_webcam_1 = __importDefault(require("react-webcam"));
 const App_1 = require("./App");
 require("./chat.css");
-function MessageInput({ username, addMessage, }) {
+function MessageInput({ username }) {
     function onMessageSend(e) {
         if (e.key === "Enter") {
             let msg = {
@@ -14,7 +15,6 @@ function MessageInput({ username, addMessage, }) {
                 text: e.target.value,
             };
             e.target.value = "";
-            // addMessage(msg);
             App_1.socket.emit("message", msg);
         }
     }
@@ -28,8 +28,29 @@ function MessagesBox({ messages }) {
                 react_1.default.createElement("span", { className: "message-user" }, msg.user),
                 ":",
                 " ",
-                react_1.default.createElement("span", { className: "message-text" }, msg.text)));
+                react_1.default.createElement("span", { className: "message-text" }, msg.text),
+                react_1.default.createElement("img", { src: msg.image64 })));
         }))));
+}
+const videoConstraints = {
+    width: 1280,
+    height: 720,
+    facingMode: "user",
+};
+function WebcamCapture({ username }) {
+    const webcamRef = react_1.default.useRef(null);
+    const capture = react_1.default.useCallback(() => {
+        const imageSrc = webcamRef.current.getScreenshot();
+        let msg = {
+            user: username,
+            text: "",
+            image64: imageSrc,
+        };
+        App_1.socket.emit("message", msg);
+    }, [webcamRef]);
+    return (react_1.default.createElement(react_1.default.Fragment, null,
+        react_1.default.createElement(react_webcam_1.default, { audio: false, height: 180, ref: webcamRef, screenshotFormat: "image/jpeg", width: 320, videoConstraints: videoConstraints }),
+        react_1.default.createElement("button", { onClick: capture }, "Send photo")));
 }
 function UserWindow({ username, setUsername }) {
     return (react_1.default.createElement("div", { className: "UserWindow" },
@@ -42,13 +63,15 @@ function UserWindow({ username, setUsername }) {
             react_1.default.createElement("input", { type: "text", value: username, onChange: (e) => {
                     setUsername(e.target.value);
                     console.log(e.target.value);
-                } }))));
+                } })),
+        react_1.default.createElement("hr", null),
+        react_1.default.createElement(WebcamCapture, { username: username })));
 }
 function ChatWindow({ messages, addMessage, username, setUsername, }) {
     return (react_1.default.createElement("div", { className: "ChatWindow" },
         react_1.default.createElement("div", { className: "MessageUserSplit" },
             react_1.default.createElement(MessagesBox, { messages: messages }),
             react_1.default.createElement(UserWindow, { username: username, setUsername: setUsername })),
-        react_1.default.createElement(MessageInput, { username: username, addMessage: addMessage })));
+        react_1.default.createElement(MessageInput, { username: username })));
 }
 exports.default = ChatWindow;

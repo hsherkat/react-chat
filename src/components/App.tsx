@@ -9,6 +9,7 @@ export const socket = io("http://localhost:5000");
 export type ChatMessage = {
   user: string;
   text: string;
+  image64?: string;
 };
 
 let fakeMessages: ChatMessage[] = [

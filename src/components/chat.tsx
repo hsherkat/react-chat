@@ -1,16 +1,13 @@
 import React, { ReactElement } from "react";
+import Webcam from "react-webcam";
 import { ChatMessage, socket } from "./App";
 import "./chat.css";
 
 type MessageInputProps = {
   username: string;
-  addMessage: Function;
 };
 
-function MessageInput({
-  username,
-  addMessage,
-}: MessageInputProps): ReactElement {
+function MessageInput({ username }: MessageInputProps): ReactElement {
   function onMessageSend(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       let msg: ChatMessage = {
@@ -18,7 +15,6 @@ function MessageInput({
         text: (e.target as HTMLTextAreaElement).value,
       };
       (e.target as HTMLTextAreaElement).value = "";
-      // addMessage(msg);
       socket.emit("message", msg);
     }
   }
@@ -48,11 +44,48 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
             <li key={index}>
               <span className="message-user">{msg.user}</span>:{" "}
               <span className="message-text">{msg.text}</span>
+              <img src={msg.image64}></img>
             </li>
           );
         })}
       </ul>
     </div>
+  );
+}
+
+const videoConstraints = {
+  width: 1280,
+  height: 720,
+  facingMode: "user",
+};
+
+type WebcamCaptureProps = {
+  username: string;
+};
+
+function WebcamCapture({ username }: WebcamCaptureProps) {
+  const webcamRef = React.useRef(null);
+  const capture = React.useCallback(() => {
+    const imageSrc = webcamRef.current.getScreenshot();
+    let msg: ChatMessage = {
+      user: username,
+      text: "",
+      image64: imageSrc,
+    };
+    socket.emit("message", msg);
+  }, [webcamRef]);
+  return (
+    <>
+      <Webcam
+        audio={false}
+        height={180}
+        ref={webcamRef}
+        screenshotFormat="image/jpeg"
+        width={320}
+        videoConstraints={videoConstraints}
+      />
+      <button onClick={capture}>Send photo</button>
+    </>
   );
 }
 
@@ -79,6 +112,8 @@ function UserWindow({ username, setUsername }: UserWindowProps): ReactElement {
           }}
         ></input>
       </form>
+      <hr></hr>
+      <WebcamCapture username={username}></WebcamCapture>
     </div>
   );
 }
@@ -102,7 +137,7 @@ function ChatWindow({
         <MessagesBox messages={messages}></MessagesBox>
         <UserWindow username={username} setUsername={setUsername}></UserWindow>
       </div>
-      <MessageInput username={username} addMessage={addMessage}></MessageInput>
+      <MessageInput username={username}></MessageInput>
     </div>
   );
 }
