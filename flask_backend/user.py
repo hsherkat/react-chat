@@ -7,7 +7,8 @@ class User:
     username: str = ""
 
     def __post_init__(self):
-        self.username = f"User_{self.id[:5]}"
+        if not self.username:
+            self.username = f"User_{self.id[:5]}"
 
     def json(self):
         return asdict(self)
