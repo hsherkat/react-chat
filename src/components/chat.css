@@ -51,7 +51,10 @@ ul {
     justify-content: space-around;
 }
 
-
+.UserWindow hr {
+    margin-left: 0;
+    margin-right: 0;
+}
 
 .MessagesBox {
     width: 80%;
