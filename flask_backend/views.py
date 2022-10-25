@@ -6,6 +6,7 @@ from flask_socketio import emit
 from timezonefinder import TimezoneFinder
 
 from flask_backend import app, socket
+from flask_backend.server import server_message
 
 
 @app.route("/")
@@ -30,6 +31,7 @@ test_msg = {"user": "Mike", "text": "welp... we'll get em next time"}
 
 @app.route("/test")
 def test_fn():
-    socket.emit("message", test_msg, broadcast=True)
+    test_msg = "SERVER greets the humans in chat."
+    server_message(test_msg)
     print(f"sent {test_msg=}")
     return "<h1> this is a test </h1>"
