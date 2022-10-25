@@ -71,8 +71,8 @@ function WebcamCapture() {
         App_1.socket.emit("message", msg);
     }, [webcamRef]);
     return (react_1.default.createElement("div", { className: "webcam" },
-        react_1.default.createElement(react_webcam_1.default, { audio: false, height: 180, ref: webcamRef, screenshotFormat: "image/jpeg", width: 320, videoConstraints: videoConstraints }),
-        react_1.default.createElement("button", { onClick: capture }, "Send photo")));
+        react_1.default.createElement(react_webcam_1.default, { className: "webcam-canvas", audio: false, height: 180, ref: webcamRef, screenshotFormat: "image/jpeg", width: 320, videoConstraints: videoConstraints }),
+        react_1.default.createElement("button", { className: "webcam-capture-button", onClick: capture }, "Send photo")));
 }
 function UserWindow() {
     const [userList, setUserList] = (0, react_1.useState)([]);

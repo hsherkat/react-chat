@@ -73,6 +73,7 @@ function WebcamCapture() {
   return (
     <div className="webcam">
       <Webcam
+        className="webcam-canvas"
         audio={false}
         height={180}
         ref={webcamRef}
@@ -80,7 +81,9 @@ function WebcamCapture() {
         width={320}
         videoConstraints={videoConstraints}
       />
-      <button onClick={capture}>Send photo</button>
+      <button className="webcam-capture-button" onClick={capture}>
+        Send photo
+      </button>
     </div>
   );
 }
