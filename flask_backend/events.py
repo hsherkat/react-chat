@@ -2,7 +2,7 @@ from flask_backend import socket
 from flask_socketio import emit
 from flask import request
 
-from flask_backend.user import User, connected_users
+from flask_backend.user import User, connected_users, create_user_payload
 
 
 @socket.on("connect")
@@ -21,7 +21,7 @@ def handle_connect():
 def handle_disconnect():
     user = connected_users[request.sid]
     del connected_users[user.id]
-    user_payload = {user.id: user.json() for user in connected_users.values()}
+    user_payload = create_user_payload()
     emit(
         "usersChange",
         user_payload,
