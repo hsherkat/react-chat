@@ -20,7 +20,7 @@ def handle_connect():
 
 @socket.on("disconnect")
 def handle_disconnect():
-    user = connected_users[request.sid]
+    user = get_user()
     del connected_users[user.id]
     user_payload = create_user_payload()
     emit(
@@ -32,8 +32,8 @@ def handle_disconnect():
 
 @socket.on("usernameChange")
 def handle_username_change(new_name):
-    user = connected_users[request.sid]
-    if new_name.startswith('SERVER'):
+    user = get_user()
+    if new_name.startswith("SERVER"):
         return
     user.username = new_name
     user_payload = {user.id: user.json() for user in connected_users.values()}
@@ -47,8 +47,12 @@ def handle_username_change(new_name):
 @socket.on("message")
 def handle_message(message_json):
     text = message_json["text"]
-    user = connected_users[request.sid]
+    user = get_user()
     message_json["user"] = user.json()
     emit("message", message_json, broadcast=True)
     if text.startswith("//"):
         handle_command(text[2:])
+
+
+def get_user():
+    return connected_users[request.sid]

@@ -3,6 +3,11 @@ from random import randint
 from flask_backend import socket
 from flask_backend.user import User
 
+
+class CommandError(Exception):
+    ...
+
+
 SERVER = User(id="server", username="SERVER")
 
 
@@ -20,8 +25,8 @@ def cmd_roll(dice_string: str):
         for dice in args:
             n_rolls, sides = map(int, dice.split("d"))
             rolls.extend(die(sides, n_rolls))
-    except:
-        raise ValueError
+    except Exception as e:
+        raise CommandError(e)
     else:
         dice_str = " ".join(args)
         results = " ".join(rolls)
@@ -44,3 +49,5 @@ def handle_command(text):
         COMMANDS[command](arg[0])
     except KeyError:
         server_message("No such command.")
+    except CommandError:
+        server_message("Something went wrong with the command.")
