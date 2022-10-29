@@ -4,7 +4,9 @@ import "./App.css";
 import ChatWindow from "./chat";
 import Header from "./Header";
 
-export const socket = io("http://localhost:5000");
+export const socket = io("http://localhost:5000", {
+  auth: { token: "token" },
+});
 
 export type User = {
   id: string;

@@ -7,7 +7,8 @@ from flask_backend.server import handle_command
 
 
 @socket.on("connect")
-def handle_connect():
+def handle_connect(auth):
+    print(auth)
     new_user = User(id=request.sid)
     connected_users[new_user.id] = new_user
     user_payload = {user.id: user.json() for user in connected_users.values()}
