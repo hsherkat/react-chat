@@ -18,5 +18,5 @@ class User:
 connected_users: dict[str, User] = dict()
 
 
-def create_user_payload():
+def create_users_payload():
     return {user.id: user.json() for user in connected_users.values()}

@@ -2,7 +2,7 @@ from flask_backend import socket
 from flask_socketio import emit
 from flask import request
 
-from flask_backend.user import User, connected_users, create_user_payload
+from flask_backend.user import User, connected_users, create_users_payload
 from flask_backend.server import handle_command
 
 
@@ -11,10 +11,10 @@ def handle_connect(auth):
     print(auth)
     new_user = User(id=request.sid)
     connected_users[new_user.id] = new_user
-    user_payload = {user.id: user.json() for user in connected_users.values()}
+    users_payload = create_users_payload()
     emit(
         "usersChange",
-        user_payload,
+        users_payload,
         broadcast=True,
     )
 
@@ -23,10 +23,10 @@ def handle_connect(auth):
 def handle_disconnect():
     user = get_user()
     del connected_users[user.id]
-    user_payload = create_user_payload()
+    users_payload = create_users_payload()
     emit(
         "usersChange",
-        user_payload,
+        users_payload,
         broadcast=True,
     )
 
@@ -37,10 +37,10 @@ def handle_username_change(new_name):
     if new_name.startswith("SERVER"):
         return
     user.username = new_name
-    user_payload = {user.id: user.json() for user in connected_users.values()}
+    users_payload = create_users_payload()
     emit(
         "usersChange",
-        user_payload,
+        users_payload,
         broadcast=True,
     )
 
@@ -49,10 +49,10 @@ def handle_username_change(new_name):
 def handle_color_change(new_color):
     user = get_user()
     user.color = new_color
-    user_payload = {user.id: user.json() for user in connected_users.values()}
+    users_payload = create_users_payload()
     emit(
         "usersChange",
-        user_payload,
+        users_payload,
         broadcast=True,
     )
 

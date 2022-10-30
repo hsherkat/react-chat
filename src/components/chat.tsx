@@ -124,8 +124,11 @@ function UserWindow(): ReactElement {
           <li key={user.id}>{user.username}</li>
         ))}
       </ul>
+
       <hr></hr>
+
       <span> Input your info:</span>
+
       <div className="username-input">
         <label htmlFor="username"> Username: </label>
         <input
@@ -136,6 +139,7 @@ function UserWindow(): ReactElement {
           onKeyDown={(e) => onUsernameEntered(e)}
         ></input>
       </div>
+
       <div className="color-input">
         <label htmlFor="color"> Color: </label>
         <input
@@ -146,7 +150,9 @@ function UserWindow(): ReactElement {
           onKeyDown={(e) => onColorEntered(e)}
         ></input>
       </div>
+
       <hr></hr>
+
       <WebcamCapture></WebcamCapture>
     </div>
   );
