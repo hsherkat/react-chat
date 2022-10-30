@@ -47,9 +47,8 @@ function MessagesBox({ messages }) {
     return (react_1.default.createElement("div", { className: "MessagesBox" },
         react_1.default.createElement("ul", null, messages.map((msg, index) => {
             return (react_1.default.createElement("li", { key: index },
-                react_1.default.createElement("span", { className: "message-user" }, msg.user.username),
-                ":",
-                " ",
+                react_1.default.createElement("span", { className: "message-user", style: { color: msg.user.color || "Black" } }, msg.user.username),
+                ": ",
                 react_1.default.createElement("span", { className: "message-text" }, msg.text),
                 react_1.default.createElement("img", { src: msg.image64 })));
         }))));
@@ -88,14 +87,23 @@ function UserWindow() {
             App_1.socket.emit("usernameChange", newName);
         }
     }
+    function onColorEntered(e) {
+        if (e.key === "Enter") {
+            const newColor = e.target.value;
+            App_1.socket.emit("colorChange", newColor);
+        }
+    }
     return (react_1.default.createElement("div", { className: "UserWindow" },
         react_1.default.createElement("span", null, "Active users"),
         react_1.default.createElement("ul", { className: "users-list" }, userList.map((user) => (react_1.default.createElement("li", { key: user.id }, user.username)))),
         react_1.default.createElement("hr", null),
         react_1.default.createElement("span", null, " Input your info:"),
         react_1.default.createElement("div", { className: "username-input" },
-            react_1.default.createElement("label", { htmlFor: "username" }, "Username "),
+            react_1.default.createElement("label", { htmlFor: "username" }, " Username: "),
             react_1.default.createElement("input", { type: "text", minLength: 1, maxLength: 70, placeholder: "Press <Enter> to change username", onKeyDown: (e) => onUsernameEntered(e) })),
+        react_1.default.createElement("div", { className: "color-input" },
+            react_1.default.createElement("label", { htmlFor: "color" }, " Color: "),
+            react_1.default.createElement("input", { type: "text", minLength: 1, maxLength: 25, placeholder: "Press <Enter> to change color", onKeyDown: (e) => onColorEntered(e) })),
         react_1.default.createElement("hr", null),
         react_1.default.createElement(WebcamCapture, null)));
 }

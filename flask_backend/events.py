@@ -45,6 +45,18 @@ def handle_username_change(new_name):
     )
 
 
+@socket.on("colorChange")
+def handle_color_change(new_color):
+    user = get_user()
+    user.color = new_color
+    user_payload = {user.id: user.json() for user in connected_users.values()}
+    emit(
+        "usersChange",
+        user_payload,
+        broadcast=True,
+    )
+
+
 @socket.on("message")
 def handle_message(message_json):
     text = message_json["text"]

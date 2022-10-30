@@ -5,6 +5,7 @@ from dataclasses import dataclass, asdict
 class User:
     id: str
     username: str = ""
+    color: str = "Black"
 
     def __post_init__(self):
         if not self.username:

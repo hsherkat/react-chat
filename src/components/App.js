@@ -36,11 +36,17 @@ exports.socket = (0, socket_io_client_1.default)("http://localhost:5000", {
     auth: { token: "token" },
 });
 let fakeMessages = [
-    { user: { id: "1", username: "Mike" }, text: "go NU!" },
-    { user: { id: "2", username: "Dustin" }, text: "NU will lose!" },
-    { user: { id: "3", username: "Mer" }, text: "where's the kitty?" },
+    { user: { id: "1", username: "Mike", color: "Purple" }, text: "go NU!" },
     {
-        user: { id: "4", username: "Me" },
+        user: { id: "2", username: "Dustin", color: "Brown" },
+        text: "NU will lose!",
+    },
+    {
+        user: { id: "3", username: "Mer", color: "Pink" },
+        text: "where's the kitty?",
+    },
+    {
+        user: { id: "4", username: "Me", color: "LightBlue" },
         text: "don't worry, she'll be back...",
     },
     { user: { id: "5", username: "Brian" }, text: "yup" },

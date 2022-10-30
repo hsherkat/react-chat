@@ -43,8 +43,13 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
         {messages.map((msg, index) => {
           return (
             <li key={index}>
-              <span className="message-user">{msg.user.username}</span>:{" "}
-              <span className="message-text">{msg.text}</span>
+              <span
+                className="message-user"
+                style={{ color: msg.user.color || "Black" }}
+              >
+                {msg.user.username}
+              </span>
+              : <span className="message-text">{msg.text}</span>
               <img src={msg.image64}></img>
             </li>
           );
@@ -105,6 +110,12 @@ function UserWindow(): ReactElement {
     }
   }
 
+  function onColorEntered(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      const newColor = (e.target as HTMLInputElement).value;
+      socket.emit("colorChange", newColor);
+    }
+  }
   return (
     <div className="UserWindow">
       <span>Active users</span>
@@ -116,13 +127,23 @@ function UserWindow(): ReactElement {
       <hr></hr>
       <span> Input your info:</span>
       <div className="username-input">
-        <label htmlFor="username">Username </label>
+        <label htmlFor="username"> Username: </label>
         <input
           type="text"
           minLength={1}
           maxLength={70}
           placeholder="Press <Enter> to change username"
           onKeyDown={(e) => onUsernameEntered(e)}
+        ></input>
+      </div>
+      <div className="color-input">
+        <label htmlFor="color"> Color: </label>
+        <input
+          type="text"
+          minLength={1}
+          maxLength={25}
+          placeholder="Press <Enter> to change color"
+          onKeyDown={(e) => onColorEntered(e)}
         ></input>
       </div>
       <hr></hr>

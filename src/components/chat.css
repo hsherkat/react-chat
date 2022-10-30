@@ -72,6 +72,17 @@ ul {
     overflow: visible;
 }
 
+.color-input {
+    display:flex;
+}
+
+.color-input input{
+    margin-left: 10px;
+    border-radius: 5px;
+    overflow: visible;
+}
+
+
 .webcam {
     display: flex;
     flex-direction: column;
