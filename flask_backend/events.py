@@ -17,8 +17,7 @@ def handle_connect(auth):
     if (prev_id := auth["prevID"]) is not None and (
         user := disconnected_users.get(prev_id)
     ) is not None:
-        user.id = request.sid
-        del disconnected_users[prev_id]
+        reconnect(user)
     else:
         user = User(id=request.sid)
     connected_users[user.id] = user
@@ -31,17 +30,26 @@ def handle_connect(auth):
     emit("session", user.json())
 
 
+def reconnect(user):
+    del disconnected_users[user.id]
+    user.id = request.sid
+
+
 @socket.on("disconnect")
 def handle_disconnect():
     user = get_user()
-    disconnected_users[user.id] = user
-    del connected_users[user.id]
+    disconnect(user)
     users_payload = create_users_payload()
     emit(
         "usersChange",
         users_payload,
         broadcast=True,
     )
+
+
+def disconnect(user):
+    disconnected_users[user.id] = user
+    del connected_users[user.id]
 
 
 @socket.on("usernameChange")
