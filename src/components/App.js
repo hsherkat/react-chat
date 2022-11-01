@@ -32,9 +32,14 @@ const socket_io_client_1 = __importDefault(require("socket.io-client"));
 require("./App.css");
 const chat_1 = __importDefault(require("./chat"));
 const Header_1 = __importDefault(require("./Header"));
+const prevSessionID = localStorage.getItem("sessionID");
 exports.socket = (0, socket_io_client_1.default)("http://localhost:5000", {
-    auth: { token: "token" },
+    auth: { prevID: prevSessionID },
 });
+function onConnect(user) {
+    localStorage.setItem("sessionID", user.id);
+}
+exports.socket.on("session", onConnect);
 let fakeMessages = [
     { user: { id: "1", username: "Mike", color: "Purple" }, text: "go NU!" },
     {

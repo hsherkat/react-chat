@@ -4,9 +4,17 @@ import "./App.css";
 import ChatWindow from "./chat";
 import Header from "./Header";
 
+const prevSessionID = localStorage.getItem("sessionID");
+
 export const socket = io("http://localhost:5000", {
-  auth: { token: "token" },
+  auth: { prevID: prevSessionID },
 });
+
+function onConnect(user: User) {
+  localStorage.setItem("sessionID", user.id);
+}
+
+socket.on("session", onConnect);
 
 export type User = {
   id: string;

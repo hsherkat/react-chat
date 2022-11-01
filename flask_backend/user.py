@@ -16,6 +16,7 @@ class User:
 
 
 connected_users: dict[str, User] = dict()
+disconnected_users: dict[str, User] = dict()
 
 
 def create_users_payload():
