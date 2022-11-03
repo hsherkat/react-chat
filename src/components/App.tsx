@@ -45,7 +45,7 @@ let fakeMessages: ChatMessage[] = [
   { user: { id: "5", username: "Brian" }, text: "yup" },
 ];
 
-function App(): React.ReactElement {
+export function App(): React.ReactElement {
   const [currentTime, setCurrentTime] = useState("(fetching...)");
   const [messages, setMessages] = useState(fakeMessages);
 
@@ -88,5 +88,3 @@ function App(): React.ReactElement {
     </div>
   );
 }
-
-export default App;

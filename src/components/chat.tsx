@@ -118,10 +118,12 @@ function UserWindow(): ReactElement {
   }
   return (
     <div className="UserWindow">
-      <span>Active users</span>
+      <span>Active users:</span>
       <ul className="users-list">
         {userList.map((user: User) => (
-          <li key={user.id}>{user.username}</li>
+          <li key={user.id} style={{ color: user.color || "Black" }}>
+            {user.username}
+          </li>
         ))}
       </ul>
 

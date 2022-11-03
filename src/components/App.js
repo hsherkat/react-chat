@@ -1,45 +1,16 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.socket = void 0;
-const react_1 = __importStar(require("react"));
-const socket_io_client_1 = __importDefault(require("socket.io-client"));
-require("./App.css");
-const chat_1 = __importDefault(require("./chat"));
-const Header_1 = __importDefault(require("./Header"));
+import React, { useEffect, useState } from "react";
+import io from "socket.io-client";
+import "./App.css";
+import ChatWindow from "./chat";
+import Header from "./Header";
 const prevSessionID = localStorage.getItem("sessionID");
-exports.socket = (0, socket_io_client_1.default)("http://localhost:5000", {
+export const socket = io("http://localhost:5000", {
     auth: { prevID: prevSessionID },
 });
 function onConnect(user) {
     localStorage.setItem("sessionID", user.id);
 }
-exports.socket.on("session", onConnect);
+socket.on("session", onConnect);
 let fakeMessages = [
     { user: { id: "1", username: "Mike", color: "Purple" }, text: "go NU!" },
     {
@@ -56,19 +27,19 @@ let fakeMessages = [
     },
     { user: { id: "5", username: "Brian" }, text: "yup" },
 ];
-function App() {
-    const [currentTime, setCurrentTime] = (0, react_1.useState)("(fetching...)");
-    const [messages, setMessages] = (0, react_1.useState)(fakeMessages);
+export function App() {
+    const [currentTime, setCurrentTime] = useState("(fetching...)");
+    const [messages, setMessages] = useState(fakeMessages);
     function addMessage(newMessage) {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
     }
-    (0, react_1.useEffect)(() => {
-        exports.socket.on("message", addMessage);
+    useEffect(() => {
+        socket.on("message", addMessage);
         return () => {
-            exports.socket.off("message", addMessage);
+            socket.off("message", addMessage);
         };
     }, []);
-    (0, react_1.useEffect)(() => {
+    useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
             const userPosition = position.coords;
             const query = new URLSearchParams({
@@ -83,14 +54,13 @@ function App() {
                 .catch((error) => console.log(error));
         });
     }, []);
-    return (react_1.default.createElement("div", { className: "App" },
-        react_1.default.createElement(Header_1.default, { text: "React Chat App" }),
+    return (React.createElement("div", { className: "App" },
+        React.createElement(Header, { text: "React Chat App" }),
         " ",
-        react_1.default.createElement("hr", null),
-        react_1.default.createElement("p", null,
+        React.createElement("hr", null),
+        React.createElement("p", null,
             "The time as of page load was: ",
             currentTime,
             " (fetched from the Flask backend time API)."),
-        react_1.default.createElement(chat_1.default, { messages: messages, addMessage: addMessage })));
+        React.createElement(ChatWindow, { messages: messages, addMessage: addMessage })));
 }
-exports.default = App;
