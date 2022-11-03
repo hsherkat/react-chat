@@ -46,7 +46,7 @@ export function App() {
                 latitude: userPosition.latitude.toString(),
                 longitude: userPosition.longitude.toString(),
             });
-            fetch("/api?" + query.toString())
+            fetch("/time?" + query.toString())
                 .then((res) => res.json())
                 .then((data) => {
                 setCurrentTime(data.time);

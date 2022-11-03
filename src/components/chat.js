@@ -22,7 +22,7 @@ function MessagesBox({ messages }) {
                 React.createElement("span", { className: "message-user", style: { color: msg.user.color || "Black" } }, msg.user.username),
                 ": ",
                 React.createElement("span", { className: "message-text" }, msg.text),
-                React.createElement("img", { src: msg.image64 })));
+                React.createElement("img", { src: msg.image64, alt: "" })));
         }))));
 }
 const videoConstraints = {
@@ -50,7 +50,6 @@ function UserWindow() {
     useEffect(() => {
         socket.on("usersChange", (users) => {
             setUserList(Object.values(users));
-            console.log(userList);
         });
     }, []);
     function onUsernameEntered(e) {

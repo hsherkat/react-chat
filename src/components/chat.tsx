@@ -50,7 +50,7 @@ function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
                 {msg.user.username}
               </span>
               : <span className="message-text">{msg.text}</span>
-              <img src={msg.image64}></img>
+              <img src={msg.image64} alt=""></img>
             </li>
           );
         })}
@@ -99,7 +99,6 @@ function UserWindow(): ReactElement {
   useEffect(() => {
     socket.on("usersChange", (users) => {
       setUserList(Object.values(users));
-      console.log(userList);
     });
   }, []);
 
