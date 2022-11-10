@@ -55,7 +55,7 @@ export function App() {
         });
     }, []);
     return (React.createElement("div", { className: "App" },
-        React.createElement(Header, { text: "React Chat App" }),
+        React.createElement(Header, { text: "Hooman's React Chat App" }),
         " ",
         React.createElement("hr", null),
         React.createElement("p", null,

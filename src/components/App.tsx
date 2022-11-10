@@ -79,7 +79,7 @@ export function App(): React.ReactElement {
 
   return (
     <div className="App">
-      <Header text="React Chat App" /> <hr></hr>
+      <Header text="Hooman's React Chat App" /> <hr></hr>
       <p>
         The time as of page load was: {currentTime} (fetched from the Flask
         backend time API).
