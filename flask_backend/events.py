@@ -13,9 +13,11 @@ from flask_backend.server import handle_command
 
 @socket.on("connect")
 def handle_connect(auth):
+    print("\n" * 3)
     print(auth)
+    print("\n" * 3)
     if (prev_id := auth["prevID"]) is not None and (
-        user := disconnected_users.get(prev_id)
+            user := disconnected_users.get(prev_id)
     ) is not None:
         reconnect(user)
     else:
