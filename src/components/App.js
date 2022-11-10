@@ -12,20 +12,20 @@ function onConnect(user) {
 }
 socket.on("session", onConnect);
 let fakeMessages = [
-    { user: { id: "1", username: "Mike", color: "Purple" }, text: "go NU!" },
+    { user: { id: "1", username: "Mike", color: "Purple" }, text: "test msg" },
     {
         user: { id: "2", username: "Dustin", color: "Brown" },
-        text: "NU will lose!",
+        text: "testing testing",
     },
     {
         user: { id: "3", username: "Mer", color: "Pink" },
-        text: "where's the kitty?",
+        text: "testing 123",
     },
     {
         user: { id: "4", username: "Me", color: "LightBlue" },
-        text: "don't worry, she'll be back...",
+        text: "test MESSAGE!",
     },
-    { user: { id: "5", username: "Brian" }, text: "yup" },
+    { user: { id: "5", username: "Brian" }, text: "test" },
 ];
 export function App() {
     const [currentTime, setCurrentTime] = useState("(fetching...)");
