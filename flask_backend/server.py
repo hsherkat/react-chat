@@ -30,8 +30,14 @@ def cmd_roll(dice_string: str):
     else:
         dice_str = " ".join(args)
         results = " ".join(rolls)
-        message = f"Rolled {dice_str} and got {results} for a total of {sum(map(int, results.split(' ')))}"
+        message = (
+            f"Rolled {dice_str} and got {results} for a total of {get_sum(results)}"
+        )
         server_message(message)
+
+
+def get_sum(results):
+    return sum(map(int, results.split(" ")))
 
 
 COMMANDS = {"roll": cmd_roll}
