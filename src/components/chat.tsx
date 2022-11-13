@@ -109,6 +109,8 @@ function WebcamCapture() {
 
 function UserWindow(): ReactElement {
   const [userList, setUserList] = useState<User[]>([]);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const colorRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     socket.on("usersChange", (users) => {
@@ -116,19 +118,34 @@ function UserWindow(): ReactElement {
     });
   }, []);
 
-  function onUsernameEntered(e: React.KeyboardEvent<HTMLInputElement>) {
+  function onUsernameChangeEnter(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       const newName = (e.target as HTMLInputElement).value;
       socket.emit("usernameChange", newName);
     }
   }
 
-  function onColorEntered(e: React.KeyboardEvent<HTMLInputElement>) {
+  function onUsernameChangeClick(e: React.MouseEvent<HTMLButtonElement>) {
+    if (usernameRef.current !== null) {
+      const newName = usernameRef.current.value;
+      socket.emit("usernameChange", newName);
+    }
+  }
+
+  function onColorChangeEnter(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       const newColor = (e.target as HTMLInputElement).value;
       socket.emit("colorChange", newColor);
     }
   }
+
+  function onColorChangeClick(e: React.MouseEvent<HTMLButtonElement>) {
+    if (colorRef.current !== null) {
+      const newColor = colorRef.current.value;
+      socket.emit("colorChange", newColor);
+    }
+  }
+
   return (
     <div className="UserWindow">
       <span>Active users:</span>
@@ -151,8 +168,10 @@ function UserWindow(): ReactElement {
           minLength={1}
           maxLength={70}
           placeholder="Press <Enter> to change username"
-          onKeyDown={(e) => onUsernameEntered(e)}
+          onKeyDown={(e) => onUsernameChangeEnter(e)}
+          ref={usernameRef}
         ></input>
+        <Button onClick={(e) => onUsernameChangeClick(e)}>Change</Button>
       </div>
 
       <div className="color-input">
@@ -162,8 +181,10 @@ function UserWindow(): ReactElement {
           minLength={1}
           maxLength={25}
           placeholder="Press <Enter> to change color"
-          onKeyDown={(e) => onColorEntered(e)}
+          onKeyDown={(e) => onColorChangeEnter(e)}
+          ref={colorRef}
         ></input>
+        <Button onClick={(e) => onColorChangeClick(e)}>Change</Button>
       </div>
 
       <hr></hr>
