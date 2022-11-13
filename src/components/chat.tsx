@@ -5,17 +5,29 @@ import React, {
   useRef,
   useState,
 } from "react";
+import Button from "react-bootstrap/Button";
 import Webcam from "react-webcam";
 import { ChatMessage, socket, User } from "./App";
 import "./chat.css";
 
 function MessageInput(): ReactElement {
-  function onMessageSend(e: React.KeyboardEvent<HTMLInputElement>) {
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  function onMessageSendEnter(e: React.KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       let msg = {
-        text: (e.target as HTMLTextAreaElement).value,
+        text: (e.currentTarget as HTMLInputElement).value,
       };
-      (e.target as HTMLTextAreaElement).value = "";
+      (e.currentTarget as HTMLInputElement).value = "";
+      socket.emit("message", msg);
+    }
+  }
+  function onMessageSendClick(e: React.MouseEvent<HTMLButtonElement>) {
+    if (inputRef.current !== null) {
+      let msg = {
+        text: inputRef.current.value,
+      };
+      inputRef.current.value = "";
       socket.emit("message", msg);
     }
   }
@@ -26,8 +38,10 @@ function MessageInput(): ReactElement {
         className="MessageInput--text"
         type="text"
         placeholder="Press <Enter> to send message"
-        onKeyDown={(e) => onMessageSend(e)}
+        onKeyDown={(e) => onMessageSendEnter(e)}
+        ref={inputRef}
       ></input>
+      <Button onClick={(e) => onMessageSendClick(e)}>Send</Button>
     </div>
   );
 }

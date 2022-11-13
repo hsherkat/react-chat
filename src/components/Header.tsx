@@ -8,7 +8,7 @@ type HeaderProps = {
 function Header({ text }: HeaderProps): React.ReactElement {
   return (
     <div className="Header">
-      <h2> {text} </h2>
+      <h2>{text}</h2>
     </div>
   );
 }

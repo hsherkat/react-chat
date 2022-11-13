@@ -1,19 +1,31 @@
 import React, { useCallback, useEffect, useRef, useState, } from "react";
+import Button from "react-bootstrap/Button";
 import Webcam from "react-webcam";
 import { socket } from "./App";
 import "./chat.css";
 function MessageInput() {
-    function onMessageSend(e) {
+    const inputRef = useRef(null);
+    function onMessageSendEnter(e) {
         if (e.key === "Enter") {
             let msg = {
-                text: e.target.value,
+                text: e.currentTarget.value,
             };
-            e.target.value = "";
+            e.currentTarget.value = "";
+            socket.emit("message", msg);
+        }
+    }
+    function onMessageSendClick(e) {
+        if (inputRef.current !== null) {
+            let msg = {
+                text: inputRef.current.value,
+            };
+            inputRef.current.value = "";
             socket.emit("message", msg);
         }
     }
     return (React.createElement("div", { className: "MessageInput" },
-        React.createElement("input", { className: "MessageInput--text", type: "text", placeholder: "Press <Enter> to send message", onKeyDown: (e) => onMessageSend(e) })));
+        React.createElement("input", { className: "MessageInput--text", type: "text", placeholder: "Press <Enter> to send message", onKeyDown: (e) => onMessageSendEnter(e), ref: inputRef }),
+        React.createElement(Button, { onClick: (e) => onMessageSendClick(e) }, "Send")));
 }
 function MessagesBox({ messages }) {
     return (React.createElement("div", { className: "MessagesBox" },

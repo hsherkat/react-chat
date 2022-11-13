@@ -26,6 +26,10 @@ ul {
     position: bottom;
 }
 
+.MessageInput {
+    display: flex;
+}
+
 .MessageInput--text {
     background-color: aliceblue;
     font-size: 1.15em;
