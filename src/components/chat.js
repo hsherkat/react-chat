@@ -97,11 +97,11 @@ function UserWindow() {
         React.createElement("span", null, " Input your info:"),
         React.createElement("div", { className: "username-input" },
             React.createElement("label", { htmlFor: "username" }, " Username: "),
-            React.createElement("input", { type: "text", minLength: 1, maxLength: 70, placeholder: "Press <Enter> to change username", onKeyDown: (e) => onUsernameChangeEnter(e), ref: usernameRef }),
+            React.createElement("input", { type: "text", minLength: 1, maxLength: 70, placeholder: "Press <Enter> to change", onKeyDown: (e) => onUsernameChangeEnter(e), ref: usernameRef }),
             React.createElement(Button, { onClick: (e) => onUsernameChangeClick(e) }, "Change")),
         React.createElement("div", { className: "color-input" },
             React.createElement("label", { htmlFor: "color" }, " Color: "),
-            React.createElement("input", { type: "text", minLength: 1, maxLength: 25, placeholder: "Press <Enter> to change color", onKeyDown: (e) => onColorChangeEnter(e), ref: colorRef }),
+            React.createElement("input", { type: "text", minLength: 1, maxLength: 25, placeholder: "Press <Enter> to change", onKeyDown: (e) => onColorChangeEnter(e), ref: colorRef }),
             React.createElement(Button, { onClick: (e) => onColorChangeClick(e) }, "Change")),
         React.createElement("hr", null),
         React.createElement(WebcamCapture, null)));

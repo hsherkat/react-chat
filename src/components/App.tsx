@@ -46,7 +46,6 @@ let fakeMessages: ChatMessage[] = [
 ];
 
 export function App(): React.ReactElement {
-  const [currentTime, setCurrentTime] = useState("(fetching...)");
   const [messages, setMessages] = useState(fakeMessages);
 
   function addMessage(newMessage: ChatMessage) {
@@ -61,29 +60,9 @@ export function App(): React.ReactElement {
     };
   }, []);
 
-  useEffect(() => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      const userPosition = position.coords;
-      const query = new URLSearchParams({
-        latitude: userPosition.latitude.toString(),
-        longitude: userPosition.longitude.toString(),
-      });
-      fetch("/time?" + query.toString())
-        .then((res) => res.json())
-        .then((data) => {
-          setCurrentTime(data.time);
-        })
-        .catch((error) => console.log(error));
-    });
-  }, []);
-
   return (
     <div className="App">
       <Header text="Hooman's React Chat App" /> <hr></hr>
-      <p>
-        The time as of page load was: {currentTime} (fetched from the Flask
-        backend time API).
-      </p>
       <ChatWindow messages={messages} addMessage={addMessage}></ChatWindow>
     </div>
   );

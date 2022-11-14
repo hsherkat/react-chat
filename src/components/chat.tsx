@@ -167,7 +167,7 @@ function UserWindow(): ReactElement {
           type="text"
           minLength={1}
           maxLength={70}
-          placeholder="Press <Enter> to change username"
+          placeholder="Press <Enter> to change"
           onKeyDown={(e) => onUsernameChangeEnter(e)}
           ref={usernameRef}
         ></input>
@@ -180,7 +180,7 @@ function UserWindow(): ReactElement {
           type="text"
           minLength={1}
           maxLength={25}
-          placeholder="Press <Enter> to change color"
+          placeholder="Press <Enter> to change"
           onKeyDown={(e) => onColorChangeEnter(e)}
           ref={colorRef}
         ></input>

@@ -28,7 +28,6 @@ let fakeMessages = [
     { user: { id: "5", username: "Brian" }, text: "test" },
 ];
 export function App() {
-    const [currentTime, setCurrentTime] = useState("(fetching...)");
     const [messages, setMessages] = useState(fakeMessages);
     function addMessage(newMessage) {
         setMessages((prevMessages) => [...prevMessages, newMessage]);
@@ -39,28 +38,9 @@ export function App() {
             socket.off("message", addMessage);
         };
     }, []);
-    useEffect(() => {
-        navigator.geolocation.getCurrentPosition(function (position) {
-            const userPosition = position.coords;
-            const query = new URLSearchParams({
-                latitude: userPosition.latitude.toString(),
-                longitude: userPosition.longitude.toString(),
-            });
-            fetch("/time?" + query.toString())
-                .then((res) => res.json())
-                .then((data) => {
-                setCurrentTime(data.time);
-            })
-                .catch((error) => console.log(error));
-        });
-    }, []);
     return (React.createElement("div", { className: "App" },
         React.createElement(Header, { text: "Hooman's React Chat App" }),
         " ",
         React.createElement("hr", null),
-        React.createElement("p", null,
-            "The time as of page load was: ",
-            currentTime,
-            " (fetched from the Flask backend time API)."),
         React.createElement(ChatWindow, { messages: messages, addMessage: addMessage })));
 }
