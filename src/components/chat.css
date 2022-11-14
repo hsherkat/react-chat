@@ -7,6 +7,7 @@ input {
 
 ul {
     list-style-type: none;
+    padding: 0;
 }
 
 .message-user {
@@ -61,7 +62,7 @@ ul {
 }
 
 .MessagesBox {
-    width: 80%;
+    width: 100%;
     background-color: lightslategray;
 
 }
@@ -101,4 +102,19 @@ ul {
 .UserWindow span {
     text-align: center;
     font-size: 1.1rem;
+}
+
+.users-list li{
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .mobile-hidden {
+        display: none;
+    }
+    
+    .UserWindow {
+        width: auto;
+    }
+
 }

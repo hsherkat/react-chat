@@ -33,7 +33,7 @@ function MessageInput(): ReactElement {
   }
 
   return (
-    <div className="MessageInput">
+    <div id="MessageInput" className="MessageInput">
       <input
         className="MessageInput--text"
         type="text"
@@ -52,7 +52,7 @@ type MessagesBoxProps = {
 
 function MessagesBox({ messages }: MessagesBoxProps): ReactElement {
   return (
-    <div className="MessagesBox">
+    <div id="MessagesBox" className="MessagesBox">
       <ul>
         {messages.map((msg, index) => {
           return (
@@ -147,7 +147,7 @@ function UserWindow(): ReactElement {
   }
 
   return (
-    <div className="UserWindow">
+    <div id="UserWindow" className="UserWindow mobile-hidden">
       <span>Active users:</span>
       <ul className="users-list">
         {userList.map((user: User) => (

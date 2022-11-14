@@ -23,12 +23,12 @@ function MessageInput() {
             socket.emit("message", msg);
         }
     }
-    return (React.createElement("div", { className: "MessageInput" },
+    return (React.createElement("div", { id: "MessageInput", className: "MessageInput" },
         React.createElement("input", { className: "MessageInput--text", type: "text", placeholder: "Press <Enter> to send message", onKeyDown: (e) => onMessageSendEnter(e), ref: inputRef }),
         React.createElement(Button, { onClick: (e) => onMessageSendClick(e) }, "Send")));
 }
 function MessagesBox({ messages }) {
-    return (React.createElement("div", { className: "MessagesBox" },
+    return (React.createElement("div", { id: "MessagesBox", className: "MessagesBox" },
         React.createElement("ul", null, messages.map((msg, index) => {
             return (React.createElement("li", { key: index },
                 React.createElement("span", { className: "message-user", style: { color: msg.user.color || "Black" } }, msg.user.username),
@@ -90,7 +90,7 @@ function UserWindow() {
             socket.emit("colorChange", newColor);
         }
     }
-    return (React.createElement("div", { className: "UserWindow" },
+    return (React.createElement("div", { id: "UserWindow", className: "UserWindow mobile-hidden" },
         React.createElement("span", null, "Active users:"),
         React.createElement("ul", { className: "users-list" }, userList.map((user) => (React.createElement("li", { key: user.id, style: { color: user.color || "Black" } }, user.username)))),
         React.createElement("hr", null),

@@ -1,0 +1,17 @@
+#expand-button {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    #expand-button {
+        display: block;
+    }
+
+    .mobile-hidden {
+        display: none;
+    }
+    
+
+
+
+}

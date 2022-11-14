@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
 import io from "socket.io-client";
 import "./App.css";
 import ChatWindow from "./chat";
@@ -60,9 +61,29 @@ export function App(): React.ReactElement {
     };
   }, []);
 
+  useEffect(() => {
+    const infoButton = document.getElementById("info-button");
+    const messagesBox = document.getElementById("MessagesBox");
+    const userWindow = document.getElementById("UserWindow");
+    const messageInput = document.getElementById("MessageInput");
+
+    function infoClicked() {
+      messagesBox?.classList.toggle("mobile-hidden");
+      userWindow?.classList.toggle("mobile-hidden");
+      messageInput?.classList.toggle("mobile-hidden");
+    }
+
+    infoButton?.addEventListener("click", infoClicked);
+
+    return () => {
+      infoButton?.removeEventListener("click", infoClicked);
+    };
+  }, []);
+
   return (
     <div className="App">
       <Header text="Hooman's React Chat App" /> <hr></hr>
+      <Button id="info-button">Info</Button>
       <ChatWindow messages={messages} addMessage={addMessage}></ChatWindow>
     </div>
   );

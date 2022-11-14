@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
 import io from "socket.io-client";
 import "./App.css";
 import ChatWindow from "./chat";
@@ -38,9 +39,25 @@ export function App() {
             socket.off("message", addMessage);
         };
     }, []);
+    useEffect(() => {
+        const infoButton = document.getElementById("info-button");
+        const messagesBox = document.getElementById("MessagesBox");
+        const userWindow = document.getElementById("UserWindow");
+        const messageInput = document.getElementById("MessageInput");
+        function infoClicked() {
+            messagesBox === null || messagesBox === void 0 ? void 0 : messagesBox.classList.toggle("mobile-hidden");
+            userWindow === null || userWindow === void 0 ? void 0 : userWindow.classList.toggle("mobile-hidden");
+            messageInput === null || messageInput === void 0 ? void 0 : messageInput.classList.toggle("mobile-hidden");
+        }
+        infoButton === null || infoButton === void 0 ? void 0 : infoButton.addEventListener("click", infoClicked);
+        return () => {
+            infoButton === null || infoButton === void 0 ? void 0 : infoButton.removeEventListener("click", infoClicked);
+        };
+    }, []);
     return (React.createElement("div", { className: "App" },
         React.createElement(Header, { text: "Hooman's React Chat App" }),
         " ",
         React.createElement("hr", null),
+        React.createElement(Button, { id: "info-button" }, "Info"),
         React.createElement(ChatWindow, { messages: messages, addMessage: addMessage })));
 }
