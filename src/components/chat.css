@@ -97,3 +97,8 @@ ul {
     margin-top: 10px;
     font-size: 1.1em;
 }
+
+.UserWindow span {
+    text-align: center;
+    font-size: 1.1rem;
+}
