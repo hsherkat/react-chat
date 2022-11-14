@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import { flushSync } from "react-dom";
 import io from "socket.io-client";
 import "./App.css";
 import ChatWindow from "./chat";
@@ -50,7 +51,26 @@ export function App(): React.ReactElement {
   const [messages, setMessages] = useState(fakeMessages);
 
   function addMessage(newMessage: ChatMessage) {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    flushSync(() => {
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+    scrollToLastMessage();
+  }
+
+  function isScrolledToBottom(el: HTMLElement) {
+    return el.scrollHeight - Math.round(el.scrollTop) - el.clientHeight < 75;
+  }
+
+  function scrollToLastMessage() {
+    const messagesBox = document.getElementById("MessagesBox");
+    const lastMessage = messagesBox?.lastElementChild;
+    if (messagesBox !== null && isScrolledToBottom(messagesBox)) {
+      lastMessage?.scrollIntoView({
+        block: "end",
+        inline: "nearest",
+        behavior: "smooth",
+      });
+    }
   }
 
   useEffect(() => {
