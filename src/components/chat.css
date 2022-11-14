@@ -117,4 +117,8 @@ ul {
         width: auto;
     }
 
+    .MessagesBox {
+        height: 69vh;
+    }
+
 }

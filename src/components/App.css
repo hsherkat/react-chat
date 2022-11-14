@@ -1,17 +1,16 @@
-#expand-button {
+#info-button {
     display: none;
 }
 
 @media (max-width: 600px) {
-    #expand-button {
+    #info-button {
         display: block;
+        margin: auto;
+        margin-bottom: 10px;
     }
 
     .mobile-hidden {
         display: none;
     }
-    
-
-
 
 }

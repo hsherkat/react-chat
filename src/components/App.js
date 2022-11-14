@@ -58,6 +58,6 @@ export function App() {
         React.createElement(Header, { text: "Hooman's React Chat App" }),
         " ",
         React.createElement("hr", null),
-        React.createElement(Button, { id: "info-button" }, "Info"),
+        React.createElement(Button, { id: "info-button" }, "Toggle Info"),
         React.createElement(ChatWindow, { messages: messages, addMessage: addMessage })));
 }

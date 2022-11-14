@@ -83,7 +83,7 @@ export function App(): React.ReactElement {
   return (
     <div className="App">
       <Header text="Hooman's React Chat App" /> <hr></hr>
-      <Button id="info-button">Info</Button>
+      <Button id="info-button">Toggle Info</Button>
       <ChatWindow messages={messages} addMessage={addMessage}></ChatWindow>
     </div>
   );
