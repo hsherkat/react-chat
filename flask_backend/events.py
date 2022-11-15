@@ -1,3 +1,5 @@
+import logging
+
 from flask_backend import socket
 from flask_socketio import emit
 from flask import request
@@ -13,9 +15,6 @@ from flask_backend.server import handle_command
 
 @socket.on("connect")
 def handle_connect(auth):
-    print("\n" * 3)
-    print(auth)
-    print("\n" * 3)
     if (prev_id := auth["prevID"]) is not None and (
             user := disconnected_users.get(prev_id)
     ) is not None:
@@ -30,6 +29,7 @@ def handle_connect(auth):
         broadcast=True,
     )
     emit("session", user.json())
+    logging.info(f"{request.sid} || CONNECT || {auth}")
 
 
 def reconnect(user):
@@ -47,6 +47,7 @@ def handle_disconnect():
         users_payload,
         broadcast=True,
     )
+    logging.info(f"{request.sid} || DISCONNECT")
 
 
 def disconnect(user):
@@ -66,6 +67,7 @@ def handle_username_change(new_name):
         users_payload,
         broadcast=True,
     )
+    logging.info(f"{request.sid} || USERNAMECHANGE || {new_name}")
 
 
 @socket.on("colorChange")
@@ -78,6 +80,7 @@ def handle_color_change(new_color):
         users_payload,
         broadcast=True,
     )
+    logging.info(f"{request.sid} || COLORCHANGE || {new_color}")
 
 
 @socket.on("message")
@@ -87,6 +90,7 @@ def handle_message(message_json):
     emit("message", message_json, broadcast=True)
     if (text := message_json["text"]).startswith("//"):
         handle_command(text[2:])
+    logging.info(f"{request.sid} || MESSAGE || {message_json}")
 
 
 def get_user():
