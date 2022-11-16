@@ -19,7 +19,14 @@ function onConnect(user: User) {
   localStorage.setItem("sessionID", user.id);
 }
 
+function onKick() {
+  let page = document.querySelector("html");
+  socket.disconnect();
+  page?.remove();
+}
+
 socket.on("session", onConnect);
+socket.on("kick", onKick);
 
 export type User = {
   id: string;
@@ -46,7 +53,7 @@ export function App(): React.ReactElement {
   }
 
   function isScrolledToBottom(el: HTMLElement) {
-    return el.scrollHeight - Math.round(el.scrollTop) - el.clientHeight < 75;
+    return el.scrollHeight - Math.round(el.scrollTop) - el.clientHeight < 85;
   }
 
   function scrollToLastMessage() {

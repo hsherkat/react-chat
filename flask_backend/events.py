@@ -1,4 +1,5 @@
 import logging
+from datetime import datetime
 
 from flask_backend import socket
 from flask_socketio import emit
@@ -9,7 +10,7 @@ from flask_backend.user import (
     connected_users,
     create_users_payload,
     disconnected_users,
-    get_user,
+    get_user, user_times, is_moderator,
 )
 from flask_backend.server import handle_command
 
@@ -22,6 +23,7 @@ def handle_connect(auth):
         reconnect(user)
     else:
         user = User(id=request.sid)
+    user_times[datetime.now()] = user
     connected_users[user.id] = user
     users_payload = create_users_payload()
     emit(
@@ -31,6 +33,8 @@ def handle_connect(auth):
     )
     emit("session", user.json())
     logging.info(f"{request.sid} || CONNECT || {auth}")
+    if is_moderator(user):
+        print('moderator joined')
 
 
 def reconnect(user: User):
@@ -54,6 +58,10 @@ def handle_disconnect():
 def disconnect(user: User):
     disconnected_users[user.id] = user
     del connected_users[user.id]
+    for time, person in user_times.items():
+        if user == person:
+            del user_times[time]
+            break
 
 
 @socket.on("usernameChange")
@@ -90,5 +98,5 @@ def handle_message(message_json):
     message_json["user"] = user.json()
     emit("message", message_json, broadcast=True)
     if (text := message_json["text"]).startswith("//"):
-        handle_command(text[2:])
+        handle_command(user, text[2:])
     logging.info(f"{request.sid} || MESSAGE || {message_json}")

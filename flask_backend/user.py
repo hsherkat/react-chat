@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass, asdict
 
 from flask import request
@@ -19,6 +20,7 @@ class User:
 
 connected_users: dict[str, User] = dict()
 disconnected_users: dict[str, User] = dict()
+user_times: dict[datetime.datetime, User] = dict()
 
 
 def create_users_payload() -> dict[str, str]:
@@ -32,3 +34,8 @@ def get_user() -> User:
 def get_user_by_name(name: str) -> User:
     user_matches = (user for user in connected_users.values() if user.username == name)
     return next(user_matches, None)
+
+
+def is_moderator(user: User) -> bool:
+    earliest_time = min(user_times.keys())
+    return user == user_times[earliest_time]

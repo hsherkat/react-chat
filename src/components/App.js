@@ -15,7 +15,13 @@ export const socket = io("http://47.148.77.187", {
 function onConnect(user) {
     localStorage.setItem("sessionID", user.id);
 }
+function onKick() {
+    let page = document.querySelector("html");
+    socket.disconnect();
+    page === null || page === void 0 ? void 0 : page.remove();
+}
 socket.on("session", onConnect);
+socket.on("kick", onKick);
 export function App() {
     const [messages, setMessages] = useState(storedMessages);
     function addMessage(newMessage) {
@@ -27,7 +33,7 @@ export function App() {
         scrollToLastMessage();
     }
     function isScrolledToBottom(el) {
-        return el.scrollHeight - Math.round(el.scrollTop) - el.clientHeight < 75;
+        return el.scrollHeight - Math.round(el.scrollTop) - el.clientHeight < 85;
     }
     function scrollToLastMessage() {
         const messagesBox = document.getElementById("MessagesBox");
