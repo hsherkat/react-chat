@@ -1,4 +1,5 @@
 from random import randint
+from typing import Optional, Callable
 
 from flask_socketio import emit
 
@@ -38,6 +39,10 @@ def cmd_roll(calling_user: User, dice_string: str):
         server_message(message)
 
 
+def get_sum(results):
+    return sum(map(int, results.split(" ")))
+
+
 def cmd_moderator(calling_user: User, _):
     if is_moderator(calling_user):
         server_message(f"{calling_user.username} is a moderator.")
@@ -49,28 +54,38 @@ def cmd_kick(calling_user: User, target: str):
     if not is_moderator(calling_user):
         return
     target_user = get_user_by_name(target)
+    if target_user is None:
+        raise CommandError
     socket.emit('kick', to=target_user.id)
     server_message(f"Moderator {calling_user.username} has kicked {target_user.username}.")
 
 
-def get_sum(results):
-    return sum(map(int, results.split(" ")))
+def cmd_whisper(calling_user: User, args_str: str):
+    target, message = args_str.split(" || ", 1)
+    target_user = get_user_by_name(target)
+    if target_user is None:
+        raise CommandError
+    server_message(f"{calling_user.username} whispers to you, '{message}'", to=target_user)
+    server_message(f"You whisper to {target_user.username}, '{message}'", to=calling_user)
 
 
-COMMANDS = {"roll": cmd_roll, "moderator": cmd_moderator, 'kick': cmd_kick}
+COMMANDS: dict[str, Callable] = {"roll": cmd_roll, "moderator": cmd_moderator, 'kick': cmd_kick, 'whisper': cmd_whisper}
 
 
-def server_message(text):
+def server_message(text: str, to: Optional[User] = None):
     payload = {"user": SERVER.json(), "text": text}
-    socket.emit("message", payload, broadcast=True)
+    if to is None:
+        socket.emit("message", payload, broadcast=True)
+    else:
+        socket.emit("message", payload, to=to.id)
 
 
 def handle_command(calling_user: User, text: str):
     command, *arg = text.split(" ", 1)
-    arg = arg or ['']
+    args_str = '' if arg == [] else arg[0]
     print(f"{command=}")
     try:
-        COMMANDS[command](calling_user, arg[0])
+        COMMANDS[command](calling_user, args_str)
     except KeyError:
         server_message("No such command.")
     except CommandError:

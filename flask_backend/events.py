@@ -94,9 +94,10 @@ def handle_color_change(new_color: str):
 
 @socket.on("message")
 def handle_message(message_json):
+    logging.info(f"{request.sid} || MESSAGE || {message_json}")
     user = get_user()
     message_json["user"] = user.json()
-    emit("message", message_json, broadcast=True)
     if (text := message_json["text"]).startswith("//"):
         handle_command(user, text[2:])
-    logging.info(f"{request.sid} || MESSAGE || {message_json}")
+        return
+    emit("message", message_json, broadcast=True)
