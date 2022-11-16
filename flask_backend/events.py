@@ -9,6 +9,7 @@ from flask_backend.user import (
     connected_users,
     create_users_payload,
     disconnected_users,
+    get_user,
 )
 from flask_backend.server import handle_command
 
@@ -32,7 +33,7 @@ def handle_connect(auth):
     logging.info(f"{request.sid} || CONNECT || {auth}")
 
 
-def reconnect(user):
+def reconnect(user: User):
     del disconnected_users[user.id]
     user.id = request.sid
 
@@ -50,7 +51,7 @@ def handle_disconnect():
     logging.info(f"{request.sid} || DISCONNECT")
 
 
-def disconnect(user):
+def disconnect(user: User):
     disconnected_users[user.id] = user
     del connected_users[user.id]
 
@@ -71,7 +72,7 @@ def handle_username_change(new_name):
 
 
 @socket.on("colorChange")
-def handle_color_change(new_color):
+def handle_color_change(new_color: str):
     user = get_user()
     user.color = new_color
     users_payload = create_users_payload()
@@ -91,7 +92,3 @@ def handle_message(message_json):
     if (text := message_json["text"]).startswith("//"):
         handle_command(text[2:])
     logging.info(f"{request.sid} || MESSAGE || {message_json}")
-
-
-def get_user():
-    return connected_users[request.sid]
