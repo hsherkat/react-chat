@@ -12,7 +12,7 @@ from flask_backend.user import (
     disconnected_users,
     get_user, user_times, is_moderator,
 )
-from flask_backend.server import handle_command
+from flask_backend.server import handle_command, server_message
 
 
 @socket.on("connect")
@@ -32,9 +32,8 @@ def handle_connect(auth):
         broadcast=True,
     )
     emit("session", user.json())
+    server_message(f"{user.username} has entered the chat")
     logging.info(f"{request.sid} || CONNECT || {auth}")
-    if is_moderator(user):
-        print('moderator joined')
 
 
 def reconnect(user: User):
@@ -52,6 +51,7 @@ def handle_disconnect():
         users_payload,
         broadcast=True,
     )
+    server_message(f"{user.username} has left the chat")
     logging.info(f"{request.sid} || DISCONNECT")
 
 
